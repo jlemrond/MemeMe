@@ -38,13 +38,6 @@ class ViewController: UIViewController, UINavigationBarDelegate {
     
     navigationBar = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.size.width, height: 44))
     
-    // Set up Navigation Bar Constratints
-    navigationBar.translatesAutoresizingMaskIntoConstraints = false
-    
-    let navigationConstraintVertical = NSLayoutConstraint(item: navigationBar, attribute: .Top, relatedBy: .Equal, toItem: view, attribute: .Top, multiplier: 1, constant: 0)
-    let navigationConstraintLeading = NSLayoutConstraint(item: navigationBar, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1, constant: 0)
-    let navigationConstraintTrailing = NSLayoutConstraint(item: navigationBar, attribute: .Trailing, relatedBy: .Equal, toItem: view, attribute: .Trailing, multiplier: 1, constant: 0)
-    
     // TODO: Add Cancel Button
     let shareButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
     shareButton.setImage(UIImage(named: "BarButton1"), forState: .Normal)
@@ -61,7 +54,9 @@ class ViewController: UIViewController, UINavigationBarDelegate {
     navigationBar.items = [navigationItem]
     
     self.view.addSubview(navigationBar)
-    view.addConstraints([navigationConstraintVertical, navigationConstraintLeading, navigationConstraintTrailing])
+    
+    navigationBar.translatesAutoresizingMaskIntoConstraints = false
+    establishConstraints(navigationBar)
     
   }
   
@@ -69,13 +64,6 @@ class ViewController: UIViewController, UINavigationBarDelegate {
     
     // Initialize Toolbar
     toolbar = UIToolbar(frame: CGRect(x: 0, y: self.view.frame.size.height - 44, width: self.view.frame.size.width, height: 44))
-    
-    // Set up parameters for Contrainsts
-    toolbar.translatesAutoresizingMaskIntoConstraints = false
-    
-    let toolbarConstraintVertical = NSLayoutConstraint(item: toolbar, attribute: .Bottom, relatedBy: .Equal, toItem: view, attribute: .Bottom, multiplier: 1, constant: 0)
-    let toolbarConstraintLeading = NSLayoutConstraint(item: toolbar, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1, constant: -20)
-    let toolbarConstraintTrailing = NSLayoutConstraint(item: toolbar, attribute: .Trailing, relatedBy: .Equal, toItem: view, attribute: .Trailing, multiplier: 1, constant: 20)
     
     // TODO: Add Cancel Button
     let shareButton2 = UIButton(frame: CGRect(x: 0, y: 0, width: (self.view.frame.size.width - 3) / 2, height: 44))
@@ -94,7 +82,28 @@ class ViewController: UIViewController, UINavigationBarDelegate {
     toolbar.items = [leftButton2, flexSpace, rightButton2]
     
     self.view.addSubview(toolbar)
-    view.addConstraints([toolbarConstraintVertical, toolbarConstraintLeading, toolbarConstraintTrailing])
+    
+    toolbar.translatesAutoresizingMaskIntoConstraints = false
+    establishConstraints(toolbar)
+    
+  }
+  
+  // Sets up the constraints to keep NavBar and Toolbar at top and bottom of view, respectivly.
+  func establishConstraints(target: AnyObject) {
+    
+    var verticalConstraint = NSLayoutConstraint()
+    
+    if target as! NSObject == navigationBar {
+      verticalConstraint = NSLayoutConstraint(item: target, attribute: .Top, relatedBy: .Equal, toItem: view, attribute: .Top, multiplier: 1, constant: 0)
+    } else {
+      verticalConstraint = NSLayoutConstraint(item: target, attribute: .Bottom, relatedBy: .Equal, toItem: view, attribute: .Bottom, multiplier: 1, constant: 0)
+    }
+    
+    let leadingConstraint = NSLayoutConstraint(item: target, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1, constant: -20)
+    let trailingConstraint = NSLayoutConstraint(item: target, attribute: .Trailing, relatedBy: .Equal, toItem: view, attribute: .Trailing, multiplier: 1, constant: 20)
+    
+    view.addConstraints([verticalConstraint, leadingConstraint, trailingConstraint])
+    
   }
   
 }
