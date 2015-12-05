@@ -8,29 +8,41 @@
 
 import UIKit
 
-class ViewController: UIViewController, UINavigationBarDelegate {
+class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
 
   var navigationBar = UINavigationBar()
   var toolbar = UIToolbar()
   
+  @IBOutlet weak var pickedImage: UIImageView!
+  @IBOutlet weak var topTextField: UITextField!
+  @IBOutlet weak var bottomTextField: UITextField!
+  
+  let imagePickerController = UIImagePickerController()
+  
+  let memeTextAttributes = [
+    NSStrokeColorAttributeName : UIColor.blackColor(),
+    NSForegroundColorAttributeName : UIColor.whiteColor(),
+    NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+    NSStrokeWidthAttributeName : "4.0",
+  ]
+
   override func viewDidLoad() {
     super.viewDidLoad()
     
     setUpNavigationBar()
     setUpToolbar()
     
-
-  }
-  
-
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
-  
-
-  func pickImageFromAlbum() {
+    imagePickerController.delegate = self
     
+    topTextField.text = "TOP"
+    topTextField.delegate = self
+    topTextField.defaultTextAttributes = memeTextAttributes
+    topTextField.textAlignment = NSTextAlignment.Center
+    
+    bottomTextField.text = "BOTTOM"
+    bottomTextField.delegate = self
+    bottomTextField.defaultTextAttributes = memeTextAttributes
+    bottomTextField.textAlignment = NSTextAlignment.Center
   }
   
   // MARK: Get Image Functions
@@ -68,7 +80,7 @@ class ViewController: UIViewController, UINavigationBarDelegate {
     self.view.addSubview(navigationBar)
     
     navigationBar.translatesAutoresizingMaskIntoConstraints = false
-    pinToParent(target: navigationBar, parent: view, top: 0, bottom: nil, leading: 0, trailing: 0)
+    pinToParent(target: navigationBar, parent: view, top: 20, bottom: nil, leading: 0, trailing: 0)
     
   }
   
