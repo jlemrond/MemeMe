@@ -133,7 +133,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     var fontManagerViewController = FontManagerViewController()
     fontManagerViewController = storyboard?.instantiateViewControllerWithIdentifier("FontManagerViewController") as! FontManagerViewController
     fontManagerViewController.modalPresentationStyle = UIModalPresentationStyle.Popover
-    fontManagerViewController.preferredContentSize = CGSize(width: 300, height: 250)
     
     guard let popoverFontController = fontManagerViewController.popoverPresentationController else {
       // Presents in legacy modal view (non-popover) for iOS 7 and earlier.
@@ -143,10 +142,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     // Configure popover paramaters
-    popoverFontController.permittedArrowDirections = UIPopoverArrowDirection.Any
     popoverFontController.delegate = self
     popoverFontController.barButtonItem = sender
-    popoverFontController.sourceRect = CGRect(x: 20, y: 20, width: 250, height: 250)
     
     self.presentViewController(fontManagerViewController, animated: true, completion: nil)
   }
