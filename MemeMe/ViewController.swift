@@ -68,7 +68,7 @@ class ViewController: UIViewController, UINavigationBarDelegate {
     self.view.addSubview(navigationBar)
     
     navigationBar.translatesAutoresizingMaskIntoConstraints = false
-    establishConstraints(navigationBar)
+    pinToParent(target: navigationBar, parent: view, top: 0, bottom: nil, leading: 0, trailing: 0)
     
   }
   
@@ -102,24 +102,39 @@ class ViewController: UIViewController, UINavigationBarDelegate {
     self.view.addSubview(toolbar)
     
     toolbar.translatesAutoresizingMaskIntoConstraints = false
-    establishConstraints(toolbar)
+    pinToParent(target: toolbar, parent: view, top: nil, bottom: 0, leading: -10, trailing: 10)
   }
   
   
-  // Sets up the constraints to keep NavBar and Toolbar at top and bottom of view, respectivly.
-  func establishConstraints(target: AnyObject) {
-    var verticalConstraint = NSLayoutConstraint()
+  // Sets up the constraints to parent view for objects.
+  func pinToParent(target target: AnyObject, parent: AnyObject, top: Int?, bottom: Int?, leading: Int?, trailing: Int?) {
+    var constraintArray: [NSLayoutConstraint] = []
     
-    if target as! NSObject == navigationBar {
-      verticalConstraint = NSLayoutConstraint(item: target, attribute: .Top, relatedBy: .Equal, toItem: view, attribute: .Top, multiplier: 1, constant: 0)
-    } else {
-      verticalConstraint = NSLayoutConstraint(item: target, attribute: .Bottom, relatedBy: .Equal, toItem: view, attribute: .Bottom, multiplier: 1, constant: 0)
+    if let top = top {
+      let topConstant = CGFloat(top)
+      let topConstraint = NSLayoutConstraint(item: target, attribute: .Top, relatedBy: .Equal, toItem: parent, attribute: .Top, multiplier: 1, constant: topConstant)
+      constraintArray.append(topConstraint)
     }
     
-    let leadingConstraint = NSLayoutConstraint(item: target, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1, constant: -10)
-    let trailingConstraint = NSLayoutConstraint(item: target, attribute: .Trailing, relatedBy: .Equal, toItem: view, attribute: .Trailing, multiplier: 1, constant: 10)
+    if let bottom = bottom {
+      let bottomConstant = CGFloat(bottom)
+      let bottomConstraint = NSLayoutConstraint(item: target, attribute: .Bottom, relatedBy: .Equal, toItem: parent, attribute: .Bottom, multiplier: 1, constant: bottomConstant)
+      constraintArray.append(bottomConstraint)
+    }
     
-    view.addConstraints([verticalConstraint, leadingConstraint, trailingConstraint])
+    if let leading = leading {
+      let leadingConstant = CGFloat(leading)
+      let leadingConstraint = NSLayoutConstraint(item: target, attribute: .Leading, relatedBy: .Equal, toItem: parent, attribute: .Leading, multiplier: 1, constant: leadingConstant)
+      constraintArray.append(leadingConstraint)
+    }
+    
+    if let trailing = trailing {
+      let trailingConstant = CGFloat(trailing)
+      let trailingConstraint = NSLayoutConstraint(item: target, attribute: .Trailing, relatedBy: .Equal, toItem: parent, attribute: .Trailing, multiplier: 1, constant: trailingConstant)
+      constraintArray.append(trailingConstraint)
+    }
+    
+    view.addConstraints(constraintArray)
   }
   
 }
