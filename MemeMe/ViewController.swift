@@ -9,40 +9,51 @@
 import UIKit
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
-
+  
   var navigationBar = UINavigationBar()
   var toolbar = UIToolbar()
+  var cameraButton = UIButton()
   
   @IBOutlet weak var pickedImage: UIImageView!
   @IBOutlet weak var topTextField: UITextField!
   @IBOutlet weak var bottomTextField: UITextField!
   
   let imagePickerController = UIImagePickerController()
+  let textDelegate = textFieldDelegate()
   
+  // Text attributes for top and bottom text fields.
   let memeTextAttributes = [
     NSStrokeColorAttributeName : UIColor.blackColor(),
     NSForegroundColorAttributeName : UIColor.whiteColor(),
     NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
     NSStrokeWidthAttributeName : "4.0",
   ]
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    // Set up NavigationBar and Toolbar along with Buttons.
     setUpNavigationBar()
     setUpToolbar()
     
+    // Make this ViewController a imagePicker Delegate.
     imagePickerController.delegate = self
     
+    // Set up attributes for top and bottom text fields.
     topTextField.text = "TOP"
-    topTextField.delegate = self
+    topTextField.delegate = textDelegate
     topTextField.defaultTextAttributes = memeTextAttributes
     topTextField.textAlignment = NSTextAlignment.Center
     
     bottomTextField.text = "BOTTOM"
-    bottomTextField.delegate = self
+    bottomTextField.delegate = textDelegate
     bottomTextField.defaultTextAttributes = memeTextAttributes
     bottomTextField.textAlignment = NSTextAlignment.Center
+    
+  }
+  
+  override func viewWillAppear(animated: Bool) {
+    cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
   }
   
   // MARK: Get Image Functions
@@ -96,7 +107,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     albumButton.addTarget(self, action: "selectImageFromAlbum", forControlEvents: .TouchUpInside)
     albumButton.setImage(UIImage(named: "BarButton1"), forState: .Normal)
     
-    let cameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: (self.view.frame.size.width - 30) / 2, height: 30))
+    cameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: (self.view.frame.size.width - 30) / 2, height: 30))
     cameraButton.addTarget(self, action: "captureImageFromCamera", forControlEvents: .TouchUpInside)
     cameraButton.setImage(UIImage(named: "BarButton1"), forState: .Normal)
     
