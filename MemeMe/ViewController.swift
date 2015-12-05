@@ -53,24 +53,61 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   }
   
   override func viewWillAppear(animated: Bool) {
+    // If a camera is not available, make camera button unuseable
     cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
   }
   
-  // MARK: Get Image Functions
+  
+  // **
+  // MARK: Get Image Methods
+  // **
+  
+  // Select Image From Album and Camera methods.
   
   func selectImageFromAlbum() {
-    print("Select Image from Album Selected")
+    // Present view controller to get image from photo album.
+    print("Select image from album selected")
+    imagePickerController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+    self.presentViewController(imagePickerController, animated: true, completion: nil)
   }
   
   func captureImageFromCamera() {
-    print("Capture Image from Camera Selected")
+    // Present view controller to get image from camera.
+    print("Caputre image from Camera Selected")
+    imagePickerController.sourceType = UIImagePickerControllerSourceType.Camera
+    self.presentViewController(imagePickerController, animated: true, completion: nil)
   }
   
   
-  // MARK: Inital UI Set Up Functions
+  // Image picker delegate methods.
   
-  // Set up and initalize NavigationBar
+  func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    // Select image and assign it to the pickedImage Image View.
+    guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+      print("No Image Selected")
+      return
+    }
+    
+    // Make the visable image view the image selected by the user.
+    pickedImage.image = selectedImage
+    pickedImage.contentMode = .ScaleAspectFit
+    
+    // Dismiss view controller
+    dismissViewControllerAnimated(true, completion: nil)
+  }
+  
+  func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+    //Dismiss view controller when cancel is selected.
+    dismissViewControllerAnimated(true, completion: nil)
+  }
+  
+  
+  // **
+  // MARK: Inital UI Set Up Methods
+  // **
+  
   func setUpNavigationBar() {
+    // Sets up navigation bar along with buttons.
     navigationBar = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.size.width, height: 44))
     
     // TODO: Add Cancel Button
@@ -96,8 +133,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   }
   
   
-  // Set up and initialize Toolbar
   func setUpToolbar() {
+    // Sets up toolbar along with buttons.
     toolbar = UIToolbar(frame: CGRect(x: 0, y: self.view.frame.size.height - 54, width: self.view.frame.size.width, height: 44))
     toolbar.barStyle = UIBarStyle.Black
     toolbar.translucent = true
@@ -129,8 +166,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   }
   
   
-  // Sets up the constraints to parent view for objects.
   func pinToParent(target target: AnyObject, parent: AnyObject, top: Int?, bottom: Int?, leading: Int?, trailing: Int?) {
+    // Establishes the constraints to parent view for objects.
     var constraintArray: [NSLayoutConstraint] = []
     
     if let top = top {
