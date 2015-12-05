@@ -31,31 +31,34 @@
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HH6-4P-xpY">
                                         <rect key="frame" x="20" y="20" width="97" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
+                                        <variation key="widthClass=compact" misplaced="YES">
+                                            <rect key="frame" x="0.0" y="0.0" width="380" height="17"/>
+                                        </variation>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZlW-YL-uo8">
                                         <rect key="frame" x="20" y="92" width="97" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                                         <variation key="widthClass=compact" misplaced="YES">
-                                            <rect key="frame" x="0.0" y="435" width="400" height="17"/>
+                                            <rect key="frame" x="0.0" y="435" width="380" height="17"/>
                                         </variation>
                                     </textField>
                                 </subviews>
                                 <variation key="widthClass=compact" axis="vertical" misplaced="YES">
-                                    <rect key="frame" x="152" y="233" width="400" height="452"/>
+                                    <rect key="frame" x="152" y="233" width="380" height="452"/>
                                 </variation>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Tb1-ix-9yN" firstAttribute="trailing" secondItem="G0f-PL-HYS" secondAttribute="trailing" id="BIh-I0-9fz"/>
+                            <constraint firstItem="Tb1-ix-9yN" firstAttribute="trailing" secondItem="G0f-PL-HYS" secondAttribute="trailing" constant="-10" id="BIh-I0-9fz"/>
                             <constraint firstAttribute="trailingMargin" secondItem="G0f-PL-HYS" secondAttribute="trailing" constant="-20" id="C0R-9C-FCm"/>
                             <constraint firstItem="G0f-PL-HYS" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="44" id="FIX-kW-xiH"/>
                             <constraint firstItem="G0f-PL-HYS" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="G7c-vc-4hk">
                                 <variation key="widthClass=compact" constant="-20"/>
                             </constraint>
-                            <constraint firstItem="Tb1-ix-9yN" firstAttribute="leading" secondItem="G0f-PL-HYS" secondAttribute="leading" id="L8y-hL-RxC"/>
+                            <constraint firstItem="Tb1-ix-9yN" firstAttribute="leading" secondItem="G0f-PL-HYS" secondAttribute="leading" constant="10" id="L8y-hL-RxC"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="G0f-PL-HYS" secondAttribute="bottom" constant="44" id="TXy-jQ-tah"/>
                             <constraint firstItem="Tb1-ix-9yN" firstAttribute="bottom" secondItem="G0f-PL-HYS" secondAttribute="bottom" constant="-20" id="Yqq-mW-Nad"/>
                             <constraint firstItem="Tb1-ix-9yN" firstAttribute="top" secondItem="G0f-PL-HYS" secondAttribute="top" constant="20" id="tFl-vp-FrX"/>

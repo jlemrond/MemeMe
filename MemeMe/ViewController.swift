@@ -10,6 +10,10 @@ import UIKit
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
   
+  // **
+  // MARK: Global Variables
+  // **
+  
   var navigationBar = UINavigationBar()
   var toolbar = UIToolbar()
   var cameraButton = UIButton()
@@ -26,17 +30,15 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     NSStrokeColorAttributeName : UIColor.blackColor(),
     NSForegroundColorAttributeName : UIColor.whiteColor(),
     NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-    NSStrokeWidthAttributeName : "4.0",
+    NSStrokeWidthAttributeName : "-4.0",
   ]
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    // Set up NavigationBar and Toolbar along with Buttons.
     setUpNavigationBar()
     setUpToolbar()
     
-    // Make this ViewController a imagePicker Delegate.
     imagePickerController.delegate = self
     
     // Set up attributes for top and bottom text fields.
@@ -67,6 +69,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   func selectImageFromAlbum() {
     // Present view controller to get image from photo album.
     print("Select image from album selected")
+    
     imagePickerController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
     self.presentViewController(imagePickerController, animated: true, completion: nil)
   }
@@ -74,6 +77,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   func captureImageFromCamera() {
     // Present view controller to get image from camera.
     print("Caputre image from Camera Selected")
+    
     imagePickerController.sourceType = UIImagePickerControllerSourceType.Camera
     self.presentViewController(imagePickerController, animated: true, completion: nil)
   }
@@ -83,6 +87,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
     // Select image and assign it to the pickedImage Image View.
+    
     guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
       print("No Image Selected")
       return
@@ -94,6 +99,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     // Dismiss view controller
     dismissViewControllerAnimated(true, completion: nil)
+    
+    print("Image selected and displayed")
   }
   
   func imagePickerControllerDidCancel(picker: UIImagePickerController) {
@@ -168,6 +175,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   func pinToParent(target target: AnyObject, parent: AnyObject, top: Int?, bottom: Int?, leading: Int?, trailing: Int?) {
     // Establishes the constraints to parent view for objects.
+    
     var constraintArray: [NSLayoutConstraint] = []
     
     if let top = top {
