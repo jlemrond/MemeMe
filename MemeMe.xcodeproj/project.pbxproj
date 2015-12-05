@@ -15,6 +15,7 @@
 		84105E821C0E6D71007AB5E9 /* MemeMeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84105E811C0E6D71007AB5E9 /* MemeMeTests.swift */; };
 		84105E8D1C0E6D71007AB5E9 /* MemeMeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84105E8C1C0E6D71007AB5E9 /* MemeMeUITests.swift */; };
 		849DB09A1C127E9D0016A730 /* textFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849DB0991C127E9D0016A730 /* textFieldDelegate.swift */; settings = {ASSET_TAGS = (); }; };
+		849DB0D81C12B86F0016A730 /* FontManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849DB0D71C12B86F0016A730 /* FontManagerViewController.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		84105E8C1C0E6D71007AB5E9 /* MemeMeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemeMeUITests.swift; sourceTree = "<group>"; };
 		84105E8E1C0E6D71007AB5E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		849DB0991C127E9D0016A730 /* textFieldDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = textFieldDelegate.swift; sourceTree = "<group>"; };
+		849DB0D71C12B86F0016A730 /* FontManagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontManagerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				84105E6E1C0E6D71007AB5E9 /* ViewController.swift */,
 				849DB0991C127E9D0016A730 /* textFieldDelegate.swift */,
 				84105E701C0E6D71007AB5E9 /* Main.storyboard */,
+				849DB0D71C12B86F0016A730 /* FontManagerViewController.swift */,
 				84105E731C0E6D71007AB5E9 /* Assets.xcassets */,
 				84105E751C0E6D71007AB5E9 /* LaunchScreen.storyboard */,
 				84105E781C0E6D71007AB5E9 /* Info.plist */,
@@ -261,6 +264,7 @@
 				84105E6F1C0E6D71007AB5E9 /* ViewController.swift in Sources */,
 				849DB09A1C127E9D0016A730 /* textFieldDelegate.swift in Sources */,
 				84105E6D1C0E6D71007AB5E9 /* AppDelegate.swift in Sources */,
+				849DB0D81C12B86F0016A730 /* FontManagerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

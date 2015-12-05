@@ -8,11 +8,13 @@
 
 import UIKit
 
-class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
+class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate {
   
-  // **
-  // MARK: Global Variables
-  // **
+  
+  
+  // ******************************************************************
+  //   MARK: Global Variables
+  // ******************************************************************
   
   var navigationBar = UINavigationBar()
   var toolbar = UIToolbar()
@@ -32,6 +34,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
     NSStrokeWidthAttributeName : "-4.0",
   ]
+  
+  
+  
+  
+  // ******************************************************************
+  //   MARK: Load and Appear Methods
+  // ******************************************************************
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -60,9 +69,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   }
   
   
-  // **
-  // MARK: Get Image Methods
-  // **
+  
+  
+  // ******************************************************************
+  //   MARK: Get Image Methods
+  // ******************************************************************
   
   // Select Image From Album and Camera methods.
   
@@ -109,25 +120,60 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   }
   
   
-  // **
-  // MARK: Inital UI Set Up Methods
-  // **
+  
+  
+  // ******************************************************************
+  //   MARK: Display Font Manager Methods
+  // ******************************************************************
+  
+  func fontManagerSelected(sender: UIBarButtonItem) {
+    // Present the Font Manager via Modal Popover.
+    print("Font manager selected")
+    
+    var fontManagerViewController = FontManagerViewController()
+    fontManagerViewController = storyboard?.instantiateViewControllerWithIdentifier("FontManagerViewController") as! FontManagerViewController
+    fontManagerViewController.modalPresentationStyle = UIModalPresentationStyle.Popover
+    fontManagerViewController.preferredContentSize = CGSize(width: 300, height: 250)
+    
+    guard let popoverFontController = fontManagerViewController.popoverPresentationController else {
+      // Presents in legacy modal view (non-popover) for iOS 7 and earlier.
+      self.presentViewController(fontManagerViewController, animated: true, completion: nil)
+      print("Popover Presentation Controller not available.  Legacy veresion used.")
+      return
+    }
+    
+    // Configure popover paramaters
+    popoverFontController.permittedArrowDirections = UIPopoverArrowDirection.Any
+    popoverFontController.delegate = self
+    popoverFontController.barButtonItem = sender
+    popoverFontController.sourceRect = CGRect(x: 20, y: 20, width: 250, height: 250)
+    
+    self.presentViewController(fontManagerViewController, animated: true, completion: nil)
+  }
+  
+  func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+    // Required method to use popover modal presentations style on iPhones.  Only used in iOS 8 and later.
+    return .None
+  }
+  
+  
+  
+  
+  // ******************************************************************
+  //   MARK: Inital UI Set Up Methods
+  // ******************************************************************
   
   func setUpNavigationBar() {
     // Sets up navigation bar along with buttons.
     navigationBar = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.size.width, height: 44))
-    
-    // TODO: Add Cancel Button
-    let shareButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-    shareButton.setImage(UIImage(named: "BarButton1"), forState: .Normal)
+
+    // TODO: Add Share and Cancel Buttons
+    let fontButton = UIBarButtonItem(title: "Font", style: .Plain, target: self, action: "fontManagerSelected:")
     
     // TODO: Add Actions to Bar Buttons
     let leftButton = UIBarButtonItem(title: nil, style: .Plain, target: self, action: nil)
-    let rightButton = UIBarButtonItem(title: nil, style: .Plain, target: self, action: nil)
     
-    leftButton.customView = shareButton
-    
-    navigationItem.rightBarButtonItem = rightButton
+    navigationItem.rightBarButtonItem = fontButton
     navigationItem.leftBarButtonItem =  leftButton
     
     navigationBar.items = [navigationItem]
