@@ -36,7 +36,11 @@ class ViewController: UIViewController, UINavigationBarDelegate {
   // MARK: Get Image Functions
   
   func selectImageFromAlbum() {
-    print("Things and Stuff")
+    print("Select Image from Album Selected")
+  }
+  
+  func captureImageFromCamera() {
+    print("Capture Image from Camera Selected")
   }
   
   
@@ -72,31 +76,28 @@ class ViewController: UIViewController, UINavigationBarDelegate {
   // Set up and initialize Toolbar
   func setUpToolbar() {
     toolbar = UIToolbar(frame: CGRect(x: 0, y: self.view.frame.size.height - 54, width: self.view.frame.size.width, height: 44))
-    
-    let tapGesture = UITapGestureRecognizer(target: self, action: "selectImageFromAlbum")
+    toolbar.barStyle = UIBarStyle.Black
+    toolbar.translucent = true
     
     // TODO: Add Cancel Button
-    let shareButton2 = UIImageView(frame: CGRect(x: 0, y: 0, width: (self.view.frame.size.width - 3) / 2, height: 44))
-    shareButton2.image = UIImage(named: "BarButton2")
-    shareButton2.userInteractionEnabled = true
-    shareButton2.addGestureRecognizer(tapGesture)
-    shareButton2.contentMode = UIViewContentMode.ScaleAspectFill
+    let albumButton = UIButton(frame: CGRect(x: 0, y: 0, width: (self.view.frame.size.width - 30) / 2, height: 30))
+    albumButton.addTarget(self, action: "selectImageFromAlbum", forControlEvents: .TouchUpInside)
+    albumButton.setImage(UIImage(named: "BarButton1"), forState: .Normal)
     
-    let stuffButton = UIButton(frame: CGRect(x: 0, y: 0, width: (self.view.frame.size.width - 3) / 2, height: 44))
-    stuffButton.addTarget(self, action: "selectImageFromAlbum", forControlEvents: .TouchUpInside)
-    stuffButton.setImage(UIImage(named: "BarButton1"), forState: .Normal)
-    stuffButton.imageView?.contentMode = .ScaleAspectFill
+    let cameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: (self.view.frame.size.width - 30) / 2, height: 30))
+    cameraButton.addTarget(self, action: "captureImageFromCamera", forControlEvents: .TouchUpInside)
+    cameraButton.setImage(UIImage(named: "BarButton1"), forState: .Normal)
     
     // TODO: Add Actions to Bar Buttons
-    let leftButton2 = UIBarButtonItem(title: "Album", style: .Plain, target: self, action: "selectImageFromAlbum")
-    leftButton2.customView = shareButton2
-    let rightButton2 = UIBarButtonItem(title: "Album", style: .Plain, target: self, action: "selectImageFromAlbum")
-    rightButton2.customView = stuffButton
+    let leftToolbarButton = UIBarButtonItem()
+    leftToolbarButton.customView = albumButton
+    let rightToolbarButton = UIBarButtonItem()
+    rightToolbarButton.customView = cameraButton
     
     let flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
     flexSpace.setBackgroundImage(UIImage(named: "ToolbarTest2"), forState: .Normal, barMetrics: .Default)
     
-    toolbar.items = [leftButton2, flexSpace, rightButton2]
+    toolbar.items = [leftToolbarButton, flexSpace, rightToolbarButton]
     
     self.view.addSubview(toolbar)
     
@@ -112,11 +113,11 @@ class ViewController: UIViewController, UINavigationBarDelegate {
     if target as! NSObject == navigationBar {
       verticalConstraint = NSLayoutConstraint(item: target, attribute: .Top, relatedBy: .Equal, toItem: view, attribute: .Top, multiplier: 1, constant: 0)
     } else {
-      verticalConstraint = NSLayoutConstraint(item: target, attribute: .Bottom, relatedBy: .Equal, toItem: view, attribute: .Bottom, multiplier: 1, constant: 10)
+      verticalConstraint = NSLayoutConstraint(item: target, attribute: .Bottom, relatedBy: .Equal, toItem: view, attribute: .Bottom, multiplier: 1, constant: 0)
     }
     
-    let leadingConstraint = NSLayoutConstraint(item: target, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1, constant: -20)
-    let trailingConstraint = NSLayoutConstraint(item: target, attribute: .Trailing, relatedBy: .Equal, toItem: view, attribute: .Trailing, multiplier: 1, constant: 20)
+    let leadingConstraint = NSLayoutConstraint(item: target, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1, constant: -10)
+    let trailingConstraint = NSLayoutConstraint(item: target, attribute: .Trailing, relatedBy: .Equal, toItem: view, attribute: .Trailing, multiplier: 1, constant: 10)
     
     view.addConstraints([verticalConstraint, leadingConstraint, trailingConstraint])
   }
