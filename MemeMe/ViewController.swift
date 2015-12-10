@@ -27,7 +27,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   let textDelegate = textFieldDelegate()
   
   
-  // Text attributes for top and bottom text fields.
+  // Default text attributes for top and bottom text fields.
   var memeTextAttributes = [
     NSStrokeColorAttributeName : UIColor.blackColor(),
     NSForegroundColorAttributeName : UIColor.whiteColor(),
