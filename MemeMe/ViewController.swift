@@ -8,12 +8,11 @@
 
 import UIKit
 
-class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate {
-  
-  
+class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, FontManagerViewControllerDelegate {
+
   
   // ******************************************************************
-  //   MARK: Global Variables
+  //   MARK: Global Variables / IBOutlets
   // ******************************************************************
   
   var navigationBar = UINavigationBar()
@@ -27,11 +26,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   let imagePickerController = UIImagePickerController()
   let textDelegate = textFieldDelegate()
   
+  
   // Text attributes for top and bottom text fields.
-  let memeTextAttributes = [
+  var memeTextAttributes = [
     NSStrokeColorAttributeName : UIColor.blackColor(),
     NSForegroundColorAttributeName : UIColor.whiteColor(),
-    NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+    NSFontAttributeName : UIFont(name: "AvenirNextCondensed-Heavy", size: 40)!,
     NSStrokeWidthAttributeName : "-4.0",
   ]
   
@@ -123,7 +123,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   
   // ******************************************************************
-  //   MARK: Display Font Manager Methods
+  //   MARK: Font Manager Methods
   // ******************************************************************
   
   func fontManagerSelected(sender: UIBarButtonItem) {
@@ -133,6 +133,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     var fontManagerViewController = FontManagerViewController()
     fontManagerViewController = storyboard?.instantiateViewControllerWithIdentifier("FontManagerViewController") as! FontManagerViewController
     fontManagerViewController.modalPresentationStyle = UIModalPresentationStyle.Popover
+    
+    // Data that will be transfered to FontManagerViewController
+    fontManagerViewController.delegate = self
+    if let currentFontName = topTextField.font?.fontName {
+      fontManagerViewController.oldFontFamiliy = (currentFontName)
+    }
+  
     
     guard let popoverFontController = fontManagerViewController.popoverPresentationController else {
       // Presents in legacy modal view (non-popover) for iOS 7 and earlier.
@@ -153,6 +160,15 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     return .None
   }
   
+  func changeFontAttributes(fontAttributes: [String : NSObject]) {
+    memeTextAttributes = fontAttributes
+    topTextField.defaultTextAttributes = fontAttributes
+    bottomTextField.defaultTextAttributes = fontAttributes
+    
+    topTextField.textAlignment = .Center
+    bottomTextField.textAlignment = .Center
+  }
+  
   
   
   
@@ -162,6 +178,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   func setUpNavigationBar() {
     // Sets up navigation bar along with buttons.
+    
     navigationBar = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.size.width, height: 44))
 
     // TODO: Add Share and Cancel Buttons
@@ -178,13 +195,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     self.view.addSubview(navigationBar)
     
     navigationBar.translatesAutoresizingMaskIntoConstraints = false
-    pinToParent(target: navigationBar, parent: view, top: 20, bottom: nil, leading: 0, trailing: 0)
+    view.addConstraints(navigationBar.pinToParent(top: 20, bottom: nil, leading: 0, trailing: 0))
     
   }
   
   
   func setUpToolbar() {
     // Sets up toolbar along with buttons.
+    
     toolbar = UIToolbar(frame: CGRect(x: 0, y: self.view.frame.size.height - 54, width: self.view.frame.size.width, height: 44))
     toolbar.barStyle = UIBarStyle.Black
     toolbar.translucent = true
@@ -212,41 +230,50 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     self.view.addSubview(toolbar)
     
     toolbar.translatesAutoresizingMaskIntoConstraints = false
-    pinToParent(target: toolbar, parent: view, top: nil, bottom: 0, leading: -10, trailing: 10)
+    view.addConstraints(toolbar.pinToParent(top: nil, bottom: 0, leading: 0, trailing: 0))
+    
   }
   
+}
+
+
+extension UIView {
   
-  func pinToParent(target target: AnyObject, parent: AnyObject, top: Int?, bottom: Int?, leading: Int?, trailing: Int?) {
-    // Establishes the constraints to parent view for objects.
+  func pinToParent(top top: Int?, bottom: Int?, leading: Int?, trailing: Int?) -> [NSLayoutConstraint] {
+    // Pin a view to it's parent view.  To not include a constraint for a specified direction
+    // simply assign that parameter to nil.
+    
+    self.translatesAutoresizingMaskIntoConstraints = false
     
     var constraintArray: [NSLayoutConstraint] = []
     
     if let top = top {
       let topConstant = CGFloat(top)
-      let topConstraint = NSLayoutConstraint(item: target, attribute: .Top, relatedBy: .Equal, toItem: parent, attribute: .Top, multiplier: 1, constant: topConstant)
+      let topConstraint = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: self.superview, attribute: .Top, multiplier: 1, constant: topConstant)
       constraintArray.append(topConstraint)
     }
     
     if let bottom = bottom {
       let bottomConstant = CGFloat(bottom)
-      let bottomConstraint = NSLayoutConstraint(item: target, attribute: .Bottom, relatedBy: .Equal, toItem: parent, attribute: .Bottom, multiplier: 1, constant: bottomConstant)
+      let bottomConstraint = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: self.superview, attribute: .Bottom, multiplier: 1, constant: bottomConstant)
       constraintArray.append(bottomConstraint)
     }
     
     if let leading = leading {
       let leadingConstant = CGFloat(leading)
-      let leadingConstraint = NSLayoutConstraint(item: target, attribute: .Leading, relatedBy: .Equal, toItem: parent, attribute: .Leading, multiplier: 1, constant: leadingConstant)
+      let leadingConstraint = NSLayoutConstraint(item: self, attribute: .Leading, relatedBy: .Equal, toItem: self.superview, attribute: .Leading, multiplier: 1, constant: leadingConstant)
       constraintArray.append(leadingConstraint)
     }
     
     if let trailing = trailing {
       let trailingConstant = CGFloat(trailing)
-      let trailingConstraint = NSLayoutConstraint(item: target, attribute: .Trailing, relatedBy: .Equal, toItem: parent, attribute: .Trailing, multiplier: 1, constant: trailingConstant)
+      let trailingConstraint = NSLayoutConstraint(item: self, attribute: .Trailing, relatedBy: .Equal, toItem: self.superview, attribute: .Trailing, multiplier: 1, constant: trailingConstant)
+      
       constraintArray.append(trailingConstraint)
     }
     
-    view.addConstraints(constraintArray)
+    return constraintArray
+  
   }
   
 }
-
