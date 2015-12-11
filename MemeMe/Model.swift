@@ -6,6 +6,8 @@
 //  Copyright © 2015 Jason Lemrond. All rights reserved.
 //
 
+import UIKit
+
 struct FontModel {
   
   let name: String
@@ -26,5 +28,32 @@ struct FontModel {
       FontModel(name: "Verdana", fontFamily: "Verdana-Bold")
     ]
   }
-  
 }
+
+
+struct ProjectColors {
+  
+  static func getNavyColor() -> UIColor {
+    return UIColor(red: 1/255, green: 26/255, blue: 39/255, alpha: 1.0)
+  }
+  
+  static func getBlueColor() -> UIColor {
+    return UIColor(red: 6/255, green: 56/255, blue: 82/255, alpha: 1.0)
+  }
+  
+  static func getOrangeColor() -> UIColor {
+    return UIColor(red: 240/255, green: 129/255, blue: 15/255, alpha: 1.0)
+  }
+  
+  static func getYellowColor() -> UIColor {
+    return UIColor(red: 230/255, green: 223/255, blue: 68/255, alpha: 1.0)
+  }
+  
+  static func getIvoryColor() -> UIColor {
+    return UIColor(red: 241/255, green: 243/255, blue: 206/255, alpha: 1.0)
+  }
+}
+
+
+
+

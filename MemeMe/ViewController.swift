@@ -48,6 +48,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    view.backgroundColor = ProjectColors.getNavyColor()
+    pickedImage.backgroundColor = ProjectColors.getBlueColor()
+    
     setUpNavigationBar()
     setUpToolbar()
     
@@ -71,6 +74,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   override func viewWillAppear(animated: Bool) {
     // If a camera is not available, make camera button unuseable
     cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+  }
+  
+  override func preferredStatusBarStyle() -> UIStatusBarStyle {
+    return UIStatusBarStyle.LightContent
   }
   
   
@@ -190,6 +197,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // Sets up navigation bar along with buttons.
     
     navigationBar = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.size.width, height: 44))
+    navigationBar.barTintColor = ProjectColors.getNavyColor()
+    navigationBar.translucent = false
 
     // TODO: Add Share and Cancel Buttons
     let fontButton = UIBarButtonItem(title: "Font", style: .Plain, target: self, action: "fontManagerSelected:")
@@ -203,8 +212,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     navigationBar.items = [navigationItem]
     
     self.view.addSubview(navigationBar)
-    
-    navigationBar.translatesAutoresizingMaskIntoConstraints = false
     view.addConstraints(navigationBar.pinToParent(top: 20, bottom: nil, leading: 0, trailing: 0))
     
   }
@@ -214,21 +221,23 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // Sets up toolbar along with buttons.
     
     toolbar = UIToolbar(frame: CGRect(x: 0, y: self.view.frame.size.height - 54, width: self.view.frame.size.width, height: 44))
-    toolbar.barStyle = UIBarStyle.Black
-    toolbar.translucent = true
+    toolbar.barTintColor = ProjectColors.getNavyColor()
+    toolbar.translucent = false
     
     // TODO: Add Cancel Button
     albumButton = UIButton(frame: CGRect(x: 0, y: 0, width: 140, height: 30))
     albumButton.addTarget(self, action: "selectImageFromAlbum", forControlEvents: .TouchUpInside)
     albumButton.setTitle("\u{f03e}", forState: .Normal)
     albumButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 20)
-    albumButton.backgroundColor = UIColor.blackColor()
+    albumButton.backgroundColor = ProjectColors.getOrangeColor()
+    albumButton.setTitleColor(ProjectColors.getNavyColor(), forState: .Normal)
     
     cameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: 140, height: 30))
     cameraButton.addTarget(self, action: "captureImageFromCamera", forControlEvents: .TouchUpInside)
     cameraButton.setTitle("\u{f083}", forState: .Normal)
     cameraButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 20)
-    cameraButton.backgroundColor = UIColor.darkGrayColor()
+    cameraButton.backgroundColor = ProjectColors.getYellowColor()
+    cameraButton.setTitleColor(ProjectColors.getNavyColor(), forState: .Normal)
     
     // TODO: Add Actions to Bar Buttons
     let leftToolbarButton = UIBarButtonItem()
@@ -237,13 +246,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     rightToolbarButton.customView = cameraButton
     
     let flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
-    flexSpace.setBackgroundImage(UIImage(named: "ToolbarTest2"), forState: .Normal, barMetrics: .Default)
     
     toolbar.items = [flexSpace, leftToolbarButton, flexSpace, rightToolbarButton, flexSpace]
     
     self.view.addSubview(toolbar)
-    
-    toolbar.translatesAutoresizingMaskIntoConstraints = false
     view.addConstraints(toolbar.pinToParent(top: nil, bottom: 0, leading: 0, trailing: 0))
     
   }

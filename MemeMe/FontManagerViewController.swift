@@ -56,6 +56,19 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     fontScrollOffset = offsetFontScroll(fontFamilyName)
     addButtonsToScrollView()
     addSlidersToColorView()
+    
+    view.backgroundColor = ProjectColors.getNavyColor()
+    fontLabel.backgroundColor = ProjectColors.getNavyColor()
+    fontLabel.textColor = ProjectColors.getYellowColor()
+    colorLabel.backgroundColor = ProjectColors.getNavyColor()
+    colorLabel.textColor = ProjectColors.getYellowColor()
+    colorView.backgroundColor = ProjectColors.getNavyColor()
+    applyFontChangesButton.backgroundColor = ProjectColors.getOrangeColor()
+    applyFontChangesButton.setTitleColor(ProjectColors.getNavyColor(), forState: .Normal)
+    applyFontChangesButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 14)
+    applyFontChangesButton.setTitle("APPLY FONT CHANGES", forState: .Normal)
+    applyFontChangesButton.layer.borderWidth = 2.0
+    applyFontChangesButton.layer.borderColor = ProjectColors.getBlueColor().CGColor
   }
   
   override func viewDidLayoutSubviews() {
@@ -117,19 +130,16 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
   
   func selectedFont(sender: UIButton) {
     
-    print(sender.titleLabel?.font.familyName)
     guard let newFont = sender.titleLabel?.font.fontName else {
       return
     }
     
-    print(newFont)
-    
     fontFamilyName = newFont
     
-    fontScrollOffset = offsetFontScroll(newFont)
+    fontScrollOffset = offsetFontScroll(fontFamilyName)
     expandFontScrollView(-80, colapse: true)
     
-    print("Font Selected: \(newFont)")
+    print("Font Selected: \(fontFamilyName)")
     
   }
   
@@ -245,8 +255,8 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
   func addButtonsToScrollView() {
     //Create a font button for each font available to the user.
     
-    fontScrollView.layer.borderWidth = 3.0
-    fontScrollView.layer.borderColor = UIColor.blackColor().CGColor
+    fontScrollView.layer.borderWidth = 2.0
+    fontScrollView.layer.borderColor = ProjectColors.getBlueColor().CGColor
     fontScrollView.contentSize = CGSize(width: fontLabel.frame.size.width, height: CGFloat(30 * fonts.count))
     
     containerView.frame = fontScrollView.bounds
@@ -259,9 +269,10 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     for (index, font) in fonts.enumerate() {
       let button = UIButton()
       button.setTitle(font.name, forState: .Normal)
-      button.setTitleColor(UIColor.blackColor(), forState: .Normal)
+      button.setTitleColor(ProjectColors.getNavyColor(), forState: .Normal)
       button.titleLabel?.font = UIFont(name: font.fontFamily, size: 12)
       button.addTarget(self, action: "selectedFont:", forControlEvents: .TouchUpInside)
+      //button.backgroundColor = ProjectColors.getIvoryColor()
       containerView.addSubview(button)
       button.frame = CGRect(x: CGRectGetMinX(containerView.frame), y: CGRectGetMinY(containerView.frame) + CGFloat(30 * index), width: containerView.frame.size.width, height: 30)
     }
@@ -292,8 +303,8 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     // Create three sliders to change the RGB paramaters of the font.
     
     colorView.clipsToBounds = true
-    colorButton.layer.borderWidth = 3.0
-    colorButton.layer.borderColor = UIColor.blackColor().CGColor
+    colorButton.layer.borderWidth = 2.0
+    colorButton.layer.borderColor = ProjectColors.getBlueColor().CGColor
     colorButton.backgroundColor = oldFontColor
     
     for (color, _) in colorSliders {
