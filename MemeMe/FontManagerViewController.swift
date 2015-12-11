@@ -28,7 +28,8 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
   
   let textDelegate = textFieldDelegate()
   var delegate = FontManagerViewControllerDelegate?()
-  var oldFontFamiliy = String()
+  var fontFamilyName = String()
+  var oldFontColor = UIColor()
   
   let fonts = FontModel.all()
   var fontManagerWidth: CGFloat!
@@ -39,7 +40,7 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
   var newFontAttributes = [String: NSObject]?()
   var fontOrigin = CGPoint()
   var colorContainer = UIView()
-  
+  var colorSliders: [String: UISlider?] = ["Red": nil, "Green": nil, "Blue": nil]
   
   
   
@@ -51,10 +52,9 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     super.viewDidLoad()
     
     fontManagerWidth = 212
-    fontScrollOffset = offsetFontScroll(oldFontFamiliy)
+    fontScrollOffset = offsetFontScroll(fontFamilyName)
     addButtonsToScrollView()
     addSlidersToColorView()
-    
   }
   
   override func viewDidLayoutSubviews() {
@@ -66,7 +66,6 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     }
     
     sizePopoverView()
-    
   }
 
   
@@ -80,15 +79,27 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     // Utilize FontManager Protocoll to transfer data to the main
     // View Controller.
     
+    defer { self.dismissViewControllerAnimated(true, completion: nil) }
+    
     guard let delegate = delegate else {
       print("Delegate is nil")
       return
     }
     
+    guard let fontColor = colorButton.backgroundColor else {
+      return
+    }
+    
+    newFontAttributes = [
+      NSStrokeColorAttributeName : UIColor.blackColor(),
+      NSForegroundColorAttributeName : fontColor,
+      NSFontAttributeName : UIFont(name: fontFamilyName, size: 40)!,
+      NSStrokeWidthAttributeName : "-4.0",
+    ]
+    
     if let newFontAttributes = newFontAttributes {
        delegate.changeFontAttributes(newFontAttributes)
     }
-    self.dismissViewControllerAnimated(true, completion: nil)
     
   }
   
@@ -104,12 +115,7 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
       return
     }
     
-    newFontAttributes = [
-      NSStrokeColorAttributeName : UIColor.blackColor(),
-      NSForegroundColorAttributeName : UIColor.whiteColor(),
-      NSFontAttributeName : UIFont(name: newFont, size: 40)!,
-      NSStrokeWidthAttributeName : "-4.0",
-    ]
+    fontFamilyName = newFont
     
     fontScrollOffset = offsetFontScroll(newFont)
     expandFontScrollView(-120, colapse: true)
@@ -125,6 +131,17 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     }
     
   }
+  
+  @IBAction func changeButtonColor() {
+    
+    let red = CGFloat(colorSliders["Red"]!!.value / 255.0)
+    let green = CGFloat(colorSliders["Green"]!!.value / 255.0)
+    let blue = CGFloat(colorSliders["Blue"]!!.value / 255.0)
+    
+    colorButton.backgroundColor = UIColor(red: red, green: green, blue: blue, alpha: 1.0)
+    
+  }
+  
   
   
   // ******************************************************************
@@ -150,6 +167,7 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     }
     
     UIView.animateWithDuration(0.6, animations: { () -> Void in
+      
       
       self.fontConstraint.constant = currentScrollViewHeight + distance
       self.fontScrollView.frame = CGRect(x: self.fontOrigin.x, y: self.fontOrigin.y, width: self.containerWidth, height: currentScrollViewHeight + distance)
@@ -178,6 +196,7 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
   }
   
   func expandColorView(distance: CGFloat, colapse: Bool) {
+    // Expand and colapse the view containing the Color Changer Sliders.
     
     let currentColorViewHeight = colorView.frame.size.height
     let currentButtonOrigin = CGPoint(x: CGRectGetMinX(applyFontChangesButton.frame), y: CGRectGetMinY(applyFontChangesButton.frame))
@@ -186,10 +205,8 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
       
       self.colorConstraint.constant = currentColorViewHeight + distance
       self.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + distance)
-      //self.colorView.frame = CGRect(x: CGRectGetMinX(self.colorView.frame), y: CGRectGetMinY(self.colorView.frame), width: self.colorView.frame.size.width, height: self.colorView.frame.size.height + distance)
       self.applyFontChangesButton.frame.origin = CGPoint(x: currentButtonOrigin.x, y: currentButtonOrigin.y + distance)
     })
-    
   }
   
   
@@ -219,6 +236,9 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
   func addButtonsToScrollView() {
     //Create a font button for each font available to the user.
     
+    fontScrollView.layer.borderWidth = 3.0
+    fontScrollView.layer.borderColor = UIColor.blackColor().CGColor
+    
     fontScrollView.contentSize = CGSize(width: fontLabel.frame.size.width, height: CGFloat(30 * fonts.count))
     containerView.frame = fontScrollView.bounds
     fontScrollView.addSubview(containerView)
@@ -232,7 +252,6 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
       button.setTitle(font.name, forState: .Normal)
       button.setTitleColor(UIColor.blackColor(), forState: .Normal)
       button.titleLabel?.font = UIFont(name: font.name, size: 12)
-      button.backgroundColor = UIColor.blueColor()
       button.addTarget(self, action: "selectedFont:", forControlEvents: .TouchUpInside)
       containerView.addSubview(button)
       
@@ -262,13 +281,56 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
   
   
   func addSlidersToColorView() {
+    // Create three sliders to change the RGB paramaters of the font.
     
     colorView.clipsToBounds = true
-    let colorViewOrigin = CGPoint(x: CGRectGetMinX(colorView.bounds), y: CGRectGetMinY(colorView.bounds))
+    colorButton.layer.borderWidth = 3.0
+    colorButton.layer.borderColor = UIColor.blackColor().CGColor
+    colorButton.backgroundColor = oldFontColor
     
-    let button = UIButton(frame: CGRect(origin: colorViewOrigin, size: CGSize(width: 100, height: 100)))
-    button.backgroundColor = UIColor.blackColor()
-    colorView.addSubview(button)
+    for (color, _) in colorSliders {
+      
+      var sliderOrigin: CGPoint?
+      colorSliders[color] = UISlider()
+      
+      guard let currentButtonColor: UIColor = colorButton.backgroundColor else {
+        return
+      }
+      
+      //TODO: Look at this optional binding
+      guard let slider = colorSliders[color] else {
+        break
+      }
+      guard let colorSlider = slider else {
+        break
+      }
+    
+      colorSlider.minimumValue = 0
+      colorSlider.maximumValue = 255
+      
+      switch color {
+        case "Red":
+          sliderOrigin = CGPoint(x: 8, y: 20)
+          colorSlider.minimumTrackTintColor = UIColor.redColor()
+          colorSlider.value = Float(currentButtonColor.red()) * 255
+        case "Green":
+          sliderOrigin = CGPoint(x: 8, y: 52)
+          colorSlider.minimumTrackTintColor = UIColor.greenColor()
+          colorSlider.value = Float(currentButtonColor.green() * 255)
+        case "Blue":
+          sliderOrigin = CGPoint(x: 8, y: 84)
+          colorSlider.minimumTrackTintColor = UIColor.blueColor()
+          colorSlider.value = Float(currentButtonColor.blue() * 255)
+      default: break
+      }
+
+      let sliderSize = CGSize(width: colorView.frame.size.width - 16, height: 16)
+      
+      colorSlider.frame = CGRect(origin: sliderOrigin!, size: sliderSize)
+      colorSlider.addTarget(self, action: "changeButtonColor", forControlEvents: .ValueChanged)
+      
+      colorView.addSubview(colorSlider)
+    }
     
   }
   
@@ -287,6 +349,56 @@ protocol FontManagerViewControllerDelegate {
   func changeFontAttributes (var fontAttributes: [String: NSObject])
   
 }
+
+
+
+// ******************************************************************
+//   MARK: UIColor Extension
+// ******************************************************************
+
+
+extension UIColor {
+  // Color functions to gain access to float numbers for Red, Green, Blue and Alpha.
+  
+  func getRGBComponents() -> [CGFloat] {
+    // Create array that contains RGB components of a UIColor.
+    
+    var colorDescription = self.description
+    colorDescription = colorDescription.stringByReplacingOccurrencesOfString("UIDeviceRGBColorSpace ", withString: "")
+    var colorArray: [String] = [colorDescription]
+    colorArray = colorArray[0].componentsSeparatedByString(" ")
+    var rgbArray = [CGFloat]()
+    
+    for index in colorArray {
+      guard let value = Float(index) else {
+        break
+      }
+      rgbArray.append(CGFloat(value))
+    }
+    
+    print("rgbArray: \(rgbArray)")
+    return rgbArray
+  }
+  
+  // Get the individual components.
+  func red() -> CGFloat{
+    return self.getRGBComponents()[0]
+  }
+  
+  func green() -> CGFloat {
+    return self.getRGBComponents()[1]
+  }
+  
+  func blue() -> CGFloat {
+    return self.getRGBComponents()[2]
+  }
+  
+  func alpha() -> CGFloat {
+    return self.getRGBComponents()[3]
+  }
+  
+}
+
 
 
 

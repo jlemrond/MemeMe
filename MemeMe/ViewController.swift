@@ -34,6 +34,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     NSFontAttributeName : UIFont(name: "AvenirNextCondensed-Heavy", size: 40)!,
     NSStrokeWidthAttributeName : "-4.0",
   ]
+  var textFieldArray: [UITextField] = []
   
   
   
@@ -51,15 +52,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     imagePickerController.delegate = self
     
     // Set up attributes for top and bottom text fields.
-    topTextField.text = "TOP"
-    topTextField.delegate = textDelegate
-    topTextField.defaultTextAttributes = memeTextAttributes
-    topTextField.textAlignment = NSTextAlignment.Center
+    textFieldArray = [topTextField, bottomTextField]
     
+    topTextField.text = "TOP"
     bottomTextField.text = "BOTTOM"
-    bottomTextField.delegate = textDelegate
-    bottomTextField.defaultTextAttributes = memeTextAttributes
-    bottomTextField.textAlignment = NSTextAlignment.Center
+    
+    for index in textFieldArray {
+      index.delegate = textDelegate
+      index.defaultTextAttributes = memeTextAttributes
+      index.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      index.textAlignment = NSTextAlignment.Center
+    }
     
   }
   
@@ -137,7 +140,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // Data that will be transfered to FontManagerViewController
     fontManagerViewController.delegate = self
     if let currentFontName = topTextField.font?.fontName {
-      fontManagerViewController.oldFontFamiliy = (currentFontName)
+      print("Current Font is \(currentFontName)")
+      fontManagerViewController.fontFamilyName = currentFontName
+    }
+    
+    if let currentFontColor = topTextField.textColor {
+      print("Current Text Color description is \(currentFontColor)")
+      fontManagerViewController.oldFontColor = currentFontColor
     }
   
     
@@ -162,11 +171,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   func changeFontAttributes(fontAttributes: [String : NSObject]) {
     memeTextAttributes = fontAttributes
-    topTextField.defaultTextAttributes = fontAttributes
-    bottomTextField.defaultTextAttributes = fontAttributes
     
-    topTextField.textAlignment = .Center
-    bottomTextField.textAlignment = .Center
+    for index in textFieldArray {
+      index.defaultTextAttributes = fontAttributes
+      index.textAlignment = .Center
+    }
+    
   }
   
   
