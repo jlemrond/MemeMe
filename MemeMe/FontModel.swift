@@ -9,19 +9,21 @@
 struct FontModel {
   
   let name: String
+  let fontFamily: String
   
   static func all() -> [FontModel] {
     return [
-      FontModel(name: "AmericanTypewriter-CondensedBold"),
-      FontModel(name: "AppleSDGothicNeo-SemiBold"),
-      FontModel(name: "Arial-BoldMT"),
-      FontModel(name: "AvenirNextCondensed-Heavy"),
-      FontModel(name: "Courier-Bold"),
-      FontModel(name: "Futura-CondensedExtraBold"),
-      FontModel(name: "HelveticaNeue-CondensedBlack"),
-      FontModel(name: "Impact"),
-      FontModel(name: "Superclarendon-Black"),
-      FontModel(name: "Verdana-Bold")
+      FontModel(name: "American Typewriter", fontFamily: "AmericanTypewriter-CondensedBold"),
+      FontModel(name: "Arial", fontFamily: "Arial-BoldMT"),
+      FontModel(name: "Avenir Next", fontFamily: "AvenirNextCondensed-Heavy"),
+      FontModel(name: "Courier", fontFamily: "Courier-Bold"),
+      FontModel(name: "FontAwesome", fontFamily: "FontAwesome"),
+      FontModel(name: "Futura", fontFamily: "Futura-CondensedExtraBold"),
+      FontModel(name: "Gothic Neo", fontFamily: "AppleSDGothicNeo-SemiBold"),
+      FontModel(name: "Helvetica Neue", fontFamily: "HelveticaNeue-CondensedBlack"),
+      FontModel(name: "Impact", fontFamily: "Impact"),
+      FontModel(name: "Superclarendon", fontFamily: "Superclarendon-Black"),
+      FontModel(name: "Verdana", fontFamily: "Verdana-Bold")
     ]
   }
   

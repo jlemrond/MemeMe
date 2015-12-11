@@ -117,9 +117,12 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
   
   func selectedFont(sender: UIButton) {
     
-    guard let newFont = sender.titleLabel?.text else {
+    print(sender.titleLabel?.font.familyName)
+    guard let newFont = sender.titleLabel?.font.fontName else {
       return
     }
+    
+    print(newFont)
     
     fontFamilyName = newFont
     
@@ -257,7 +260,7 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
       let button = UIButton()
       button.setTitle(font.name, forState: .Normal)
       button.setTitleColor(UIColor.blackColor(), forState: .Normal)
-      button.titleLabel?.font = UIFont(name: font.name, size: 12)
+      button.titleLabel?.font = UIFont(name: font.fontFamily, size: 12)
       button.addTarget(self, action: "selectedFont:", forControlEvents: .TouchUpInside)
       containerView.addSubview(button)
       button.frame = CGRect(x: CGRectGetMinX(containerView.frame), y: CGRectGetMinY(containerView.frame) + CGFloat(30 * index), width: containerView.frame.size.width, height: 30)
@@ -276,7 +279,7 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     }
     
     for (index, value) in fonts.enumerate() {
-      if value.name == fontFamily {
+      if value.fontFamily == fontFamily {
         return CGFloat(index * -30)
       }
     }
