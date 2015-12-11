@@ -18,7 +18,10 @@ struct FontModel {
       FontModel(name: "AvenirNextCondensed-Heavy"),
       FontModel(name: "Courier-Bold"),
       FontModel(name: "Futura-CondensedExtraBold"),
-      FontModel(name: "HelveticaNeue-CondensedBlack")
+      FontModel(name: "HelveticaNeue-CondensedBlack"),
+      FontModel(name: "Impact"),
+      FontModel(name: "Superclarendon-Black"),
+      FontModel(name: "Verdana-Bold")
     ]
   }
   

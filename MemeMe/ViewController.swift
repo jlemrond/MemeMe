@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, FontManagerViewControllerDelegate {
 
@@ -18,6 +19,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   var navigationBar = UINavigationBar()
   var toolbar = UIToolbar()
   var cameraButton = UIButton()
+  var albumButton = UIButton()
   
   @IBOutlet weak var pickedImage: UIImageView!
   @IBOutlet weak var topTextField: UITextField!
@@ -70,7 +72,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // If a camera is not available, make camera button unuseable
     cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
   }
-  
   
   
   
@@ -149,7 +150,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
       fontManagerViewController.oldFontColor = currentFontColor
     }
   
-    
     guard let popoverFontController = fontManagerViewController.popoverPresentationController else {
       // Presents in legacy modal view (non-popover) for iOS 7 and earlier.
       self.presentViewController(fontManagerViewController, animated: true, completion: nil)
@@ -218,13 +218,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     toolbar.translucent = true
     
     // TODO: Add Cancel Button
-    let albumButton = UIButton(frame: CGRect(x: 0, y: 0, width: (self.view.frame.size.width - 30) / 2, height: 30))
+    albumButton = UIButton(frame: CGRect(x: 0, y: 0, width: 140, height: 30))
     albumButton.addTarget(self, action: "selectImageFromAlbum", forControlEvents: .TouchUpInside)
-    albumButton.setImage(UIImage(named: "BarButton1"), forState: .Normal)
+    albumButton.setTitle("\u{f03e}", forState: .Normal)
+    albumButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 20)
+    albumButton.backgroundColor = UIColor.blackColor()
     
-    cameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: (self.view.frame.size.width - 30) / 2, height: 30))
+    cameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: 140, height: 30))
     cameraButton.addTarget(self, action: "captureImageFromCamera", forControlEvents: .TouchUpInside)
-    cameraButton.setImage(UIImage(named: "BarButton1"), forState: .Normal)
+    cameraButton.setTitle("\u{f083}", forState: .Normal)
+    cameraButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 20)
+    cameraButton.backgroundColor = UIColor.darkGrayColor()
     
     // TODO: Add Actions to Bar Buttons
     let leftToolbarButton = UIBarButtonItem()
@@ -235,7 +239,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     let flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
     flexSpace.setBackgroundImage(UIImage(named: "ToolbarTest2"), forState: .Normal, barMetrics: .Default)
     
-    toolbar.items = [leftToolbarButton, flexSpace, rightToolbarButton]
+    toolbar.items = [flexSpace, leftToolbarButton, flexSpace, rightToolbarButton, flexSpace]
     
     self.view.addSubview(toolbar)
     
@@ -244,7 +248,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
   }
   
-}
+}  // ViewController End
+
+
+
+
+// ******************************************************************
+//   MARK: UIView Extension
+// ******************************************************************
 
 
 extension UIView {
@@ -283,7 +294,7 @@ extension UIView {
     }
     
     return constraintArray
-  
+    
   }
   
 }

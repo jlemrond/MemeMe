@@ -109,16 +109,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="FONT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g0C-5B-KDH">
-                                <rect key="frame" x="34" y="28" width="35" height="21"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="11" id="D5a-yp-uic"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="11"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="TEXT COLOR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f9X-PJ-CJN">
                                 <rect key="frame" x="34" y="111" width="35" height="21"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -169,12 +159,22 @@
                                     <constraint firstAttribute="height" constant="4" id="MAf-fx-bzv"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="FONT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g0C-5B-KDH">
+                                <rect key="frame" x="34" y="28" width="35" height="21"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="11" id="D5a-yp-uic"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="11"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ae1-Qe-lob" firstAttribute="width" secondItem="g0C-5B-KDH" secondAttribute="width" id="2cp-3g-33G"/>
                             <constraint firstItem="hrE-Fg-RUW" firstAttribute="centerX" secondItem="ae1-Qe-lob" secondAttribute="centerX" id="5of-Z0-Nwr"/>
-                            <constraint firstItem="f9X-PJ-CJN" firstAttribute="top" secondItem="ae1-Qe-lob" secondAttribute="bottom" constant="16" id="8G7-a3-WHt"/>
+                            <constraint firstItem="f9X-PJ-CJN" firstAttribute="top" secondItem="ae1-Qe-lob" secondAttribute="bottom" constant="8" id="8G7-a3-WHt"/>
                             <constraint firstItem="dYd-bP-c0O" firstAttribute="top" secondItem="EEl-jq-Hfs" secondAttribute="bottom" id="8zl-k7-4Gr"/>
                             <constraint firstItem="ae1-Qe-lob" firstAttribute="centerX" secondItem="g0C-5B-KDH" secondAttribute="centerX" id="AKD-ev-oLc"/>
                             <constraint firstItem="eZO-1i-MSL" firstAttribute="centerX" secondItem="g0C-5B-KDH" secondAttribute="centerX" id="Ds8-vb-iqD"/>
@@ -182,7 +182,7 @@
                             <constraint firstItem="f9X-PJ-CJN" firstAttribute="centerX" secondItem="g0C-5B-KDH" secondAttribute="centerX" id="IBF-FQ-m52"/>
                             <constraint firstItem="EEl-jq-Hfs" firstAttribute="top" secondItem="f9X-PJ-CJN" secondAttribute="bottom" id="Iu9-kE-ULu"/>
                             <constraint firstItem="eZO-1i-MSL" firstAttribute="width" secondItem="g0C-5B-KDH" secondAttribute="width" id="KAp-uY-6bT"/>
-                            <constraint firstItem="g0C-5B-KDH" firstAttribute="top" secondItem="oLn-1f-ZCT" secondAttribute="bottom" constant="16" id="Lwe-IB-SHi"/>
+                            <constraint firstItem="g0C-5B-KDH" firstAttribute="top" secondItem="oLn-1f-ZCT" secondAttribute="bottom" constant="8" id="Lwe-IB-SHi"/>
                             <constraint firstItem="dYd-bP-c0O" firstAttribute="width" secondItem="g0C-5B-KDH" secondAttribute="width" id="Qhe-BO-RgZ"/>
                             <constraint firstItem="hrE-Fg-RUW" firstAttribute="height" secondItem="ae1-Qe-lob" secondAttribute="height" id="Tr1-FI-Awe"/>
                             <constraint firstItem="EEl-jq-Hfs" firstAttribute="centerX" secondItem="g0C-5B-KDH" secondAttribute="centerX" id="W5O-pj-0EK"/>
@@ -212,7 +212,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aYo-fp-uKI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="670" y="189"/>
+            <point key="canvasLocation" x="1040" y="499"/>
         </scene>
     </scenes>
 </document>
