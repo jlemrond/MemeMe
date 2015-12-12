@@ -21,10 +21,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   var cameraButton = UIButton()
   var albumButton = UIButton()
   var navBarTopConstraint = NSLayoutConstraint()
+  var imageViewScale: CGFloat?
+  var imageScale = CGFloat()
+  var resizedTopConst = CGFloat()
+  var resizedBotConst = CGFloat()
+  var defaultTopConst: CGFloat = 20
+  var defaultBotConst: CGFloat = -20
+
   
   @IBOutlet weak var pickedImage: UIImageView!
   @IBOutlet weak var topTextField: UITextField!
   @IBOutlet weak var bottomTextField: UITextField!
+  @IBOutlet weak var textStack: UIStackView!
+  @IBOutlet weak var textStackTopConst: NSLayoutConstraint!
+  @IBOutlet weak var textStackBottomConst: NSLayoutConstraint!
   
   let imagePickerController = UIImagePickerController()
   let textDelegate = textFieldDelegate()
@@ -50,7 +60,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     super.viewDidLoad()
     
     view.backgroundColor = ProjectColors.getNavyColor()
-    pickedImage.backgroundColor = ProjectColors.getBlueColor()
+    pickedImage.backgroundColor = ProjectColors.getIvoryColor()
     
     setUpNavigationBar()
     setUpToolbar()
@@ -76,10 +86,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   override func viewWillAppear(animated: Bool) {
     // If a camera is not available, make camera button unuseable
     cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+    print("pickedImage: \(pickedImage.frame.size.width / pickedImage.frame.size.height)")
   }
   
   override func viewDidLayoutSubviews() {
     
+    // Establish the scale factor for portrait mode.
+    if imageViewScale == nil {
+      imageViewScale = initalImageViewScaleFactor()
+    }
+    
+    // Move and manipulate Navigation Bar when the frame is rotated.
     if view.bounds.size.height > view.bounds.size.width {
       navBarTopConstraint.constant = 20
       navigationBar.frame.size = CGSize(width: navigationBar.frame.size.width, height: 44)
@@ -97,6 +114,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     unsubscriveToKeyboardNotifications()
   }
   
+  override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    resizeIfPortait()
+  }
+  
+  
   
   
   // ******************************************************************
@@ -109,6 +131,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // Present view controller to get image from photo album.
     print("Select image from album selected")
     
+    resetTextStackConstraints()
     imagePickerController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
     self.presentViewController(imagePickerController, animated: true, completion: nil)
   }
@@ -117,6 +140,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // Present view controller to get image from camera.
     print("Caputre image from Camera Selected")
     
+    resetTextStackConstraints()
     imagePickerController.sourceType = UIImagePickerControllerSourceType.Camera
     self.presentViewController(imagePickerController, animated: true, completion: nil)
   }
@@ -135,6 +159,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // Make the visable image view the image selected by the user.
     pickedImage.image = selectedImage
     pickedImage.contentMode = .ScaleAspectFit
+    pickedImage.frame.size = pickedImage.sizeThatFits(selectedImage.size)
+    
+    if let image = pickedImage.image {
+      resizeImageView(image)
+    }
     
     // Dismiss view controller
     dismissViewControllerAnimated(true, completion: nil)
@@ -146,6 +175,60 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     //Dismiss view controller when cancel is selected.
     dismissViewControllerAnimated(true, completion: nil)
   }
+  
+  
+  
+  
+  // Image manipulation methods
+  func resizeImageView(image: UIImage) {
+    
+    imageScale = imageScaleFactor(image)
+    
+    if imageScale > imageViewScale {
+      print("short image")
+      
+      let newImageHeight = textStack.frame.size.width / imageScale
+      resizedTopConst = (textStack.frame.size.height - newImageHeight) / 2 + 20
+      resizedBotConst = -((textStack.frame.size.height - newImageHeight) / 2 + 20)
+    } else {
+      resizedTopConst = defaultTopConst
+      resizedBotConst = defaultBotConst
+    }
+    
+    resizeIfPortait()
+  }
+  
+  func resetTextStackConstraints() {
+    textStackTopConst.constant = defaultTopConst
+    textStackBottomConst.constant = defaultBotConst
+  }
+  
+  func resizeIfPortait() {
+    if UIDevice.currentDevice().orientation == UIDeviceOrientation.Portrait {
+      textStackTopConst.constant = resizedTopConst
+      textStackBottomConst.constant = resizedBotConst
+    } else {
+      resetTextStackConstraints()
+    }
+  }
+  
+  func initalImageViewScaleFactor() -> CGFloat {
+    // Returns the inital scale of the text stack (image frame).
+    
+    let imageViewHeight = textStack.frame.size.height
+    let imageViewWidth  = textStack.frame.size.width
+    return imageViewWidth / imageViewHeight
+  
+  }
+  
+  func imageScaleFactor(image: UIImage) -> CGFloat {
+    // Returns the scale of the given image.
+    
+    let imageHeight = image.size.height
+    let imageWidth  = image.size.width
+    return imageWidth / imageHeight
+  }
+  
   
   
   
@@ -302,6 +385,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     self.view.addSubview(toolbar)
     view.addConstraints(toolbar.pinToParent(top: nil, bottom: 0, leading: 0, trailing: 0))
+  }
+  
+  func addTextStackConstraints() {
     
   }
   

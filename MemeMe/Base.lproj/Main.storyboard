@@ -23,7 +23,7 @@
                                 <edgeInsets key="layoutMargins" top="8" left="0.0" bottom="0.0" right="0.0"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="Tb1-ix-9yN">
-                                <rect key="frame" x="132" y="213" width="16" height="17"/>
+                                <rect key="frame" x="285" y="291" width="16" height="17"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HH6-4P-xpY">
                                         <rect key="frame" x="0.0" y="0.0" width="8" height="17"/>
@@ -90,6 +90,9 @@
                     <connections>
                         <outlet property="bottomTextField" destination="ZlW-YL-uo8" id="nbf-r0-uPT"/>
                         <outlet property="pickedImage" destination="G0f-PL-HYS" id="yHe-MT-tSQ"/>
+                        <outlet property="textStack" destination="Tb1-ix-9yN" id="PLm-sE-Nuv"/>
+                        <outlet property="textStackBottomConst" destination="Yqq-mW-Nad" id="0kO-J5-CKK"/>
+                        <outlet property="textStackTopConst" destination="tFl-vp-FrX" id="gbW-Xv-2cA"/>
                         <outlet property="topTextField" destination="HH6-4P-xpY" id="mnA-uO-v5k"/>
                     </connections>
                 </viewController>
