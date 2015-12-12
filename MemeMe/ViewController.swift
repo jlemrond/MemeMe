@@ -12,12 +12,11 @@ import Foundation
 class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, FontManagerViewControllerDelegate {
 
   
+  
   // ******************************************************************
   //   MARK: Global Variables / IBOutlets
   // ******************************************************************
   
-  var navigationBar = UINavigationBar()
-  var toolbar = UIToolbar()
   var cameraButton = UIButton()
   var albumButton = UIButton()
   var navBarTopConstraint = NSLayoutConstraint()
@@ -26,9 +25,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   var resizedTopConst = CGFloat()
   var resizedBotConst = CGFloat()
   var defaultTopConst: CGFloat = 20
-  var defaultBotConst: CGFloat = -20
+  var defaultBotConst: CGFloat = 20
 
-  
+  @IBOutlet weak var navigationBar: UINavigationBar!
+  @IBOutlet weak var toolbar: UIToolbar!
   @IBOutlet weak var pickedImage: UIImageView!
   @IBOutlet weak var topTextField: UITextField!
   @IBOutlet weak var bottomTextField: UITextField!
@@ -59,42 +59,32 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    // Establish the scale factor for portrait mode.
+    if imageViewScale == nil {
+      imageViewScale = scaleFactor(view.frame.size)
+      print(imageViewScale)
+    }
+    
     view.backgroundColor = ProjectColors.getNavyColor()
     pickedImage.backgroundColor = ProjectColors.getIvoryColor()
     
     setUpNavigationBar()
     setUpToolbar()
+    setUpTextFields()
     subscribeToKeyboardNotifications()
     
     imagePickerController.delegate = self
     
-    // Set up attributes for top and bottom text fields.
-    textFieldArray = [topTextField, bottomTextField]
-    
-    topTextField.text = "TOP"
-    bottomTextField.text = "BOTTOM"
-    
-    for index in textFieldArray {
-      index.delegate = textDelegate
-      index.defaultTextAttributes = memeTextAttributes
-      index.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-      index.textAlignment = NSTextAlignment.Center
-    }
-    
   }
   
   override func viewWillAppear(animated: Bool) {
+    
     // If a camera is not available, make camera button unuseable
     cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
-    print("pickedImage: \(pickedImage.frame.size.width / pickedImage.frame.size.height)")
+    
   }
   
   override func viewDidLayoutSubviews() {
-    
-    // Establish the scale factor for portrait mode.
-    if imageViewScale == nil {
-      imageViewScale = initalImageViewScaleFactor()
-    }
     
     // Move and manipulate Navigation Bar when the frame is rotated.
     if view.bounds.size.height > view.bounds.size.width {
@@ -104,6 +94,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
       navBarTopConstraint.constant = 0
       navigationBar.frame.size = CGSize(width: navigationBar.frame.size.width, height: 32)
     }
+  
   }
   
   override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -146,6 +137,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   }
   
   
+  
   // Image picker delegate methods.
   
   func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
@@ -178,24 +170,29 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   
   
-  
   // Image manipulation methods
+  
   func resizeImageView(image: UIImage) {
+    // Establish constraints for an image in Portrait View.
     
-    imageScale = imageScaleFactor(image)
+    print(textStack.frame.size)
+    
+    imageScale = scaleFactor(image.size)
     
     if imageScale > imageViewScale {
-      print("short image")
-      
-      let newImageHeight = textStack.frame.size.width / imageScale
-      resizedTopConst = (textStack.frame.size.height - newImageHeight) / 2 + 20
-      resizedBotConst = -((textStack.frame.size.height - newImageHeight) / 2 + 20)
+      let newStackHeight = textStack.frame.size.width + 40 / imageScale
+      print("New Image Heigh: \(newStackHeight)")
+      print("TextStack Height: \(textStack.frame.size.height)")
+      resizedTopConst = (textStack.frame.size.height - newStackHeight) / 2
+      resizedBotConst = (textStack.frame.size.height - newStackHeight) / 2
     } else {
       resizedTopConst = defaultTopConst
       resizedBotConst = defaultBotConst
     }
     
     resizeIfPortait()
+    print(textStack.frame.size)
+    
   }
   
   func resetTextStackConstraints() {
@@ -212,23 +209,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
   }
   
-  func initalImageViewScaleFactor() -> CGFloat {
-    // Returns the inital scale of the text stack (image frame).
+  func scaleFactor(object: CGSize) -> CGFloat {
+    // Returns the scale for the give object.
     
-    let imageViewHeight = textStack.frame.size.height
-    let imageViewWidth  = textStack.frame.size.width
-    return imageViewWidth / imageViewHeight
-  
+    let height = object.height
+    let width  = object.width
+    return width / height
   }
-  
-  func imageScaleFactor(image: UIImage) -> CGFloat {
-    // Returns the scale of the given image.
-    
-    let imageHeight = image.size.height
-    let imageWidth  = image.size.width
-    return imageWidth / imageHeight
-  }
-  
   
   
   
@@ -387,8 +374,19 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     view.addConstraints(toolbar.pinToParent(top: nil, bottom: 0, leading: 0, trailing: 0))
   }
   
-  func addTextStackConstraints() {
+  func setUpTextFields() {
+    // Set up attributes for top and bottom text fields.
+    textFieldArray = [topTextField, bottomTextField]
     
+    topTextField.text = "TOP"
+    bottomTextField.text = "BOTTOM"
+    
+    for index in textFieldArray {
+      index.delegate = textDelegate
+      index.defaultTextAttributes = memeTextAttributes
+      index.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      index.textAlignment = NSTextAlignment.Center
+    }
   }
   
 }  // ViewController End
