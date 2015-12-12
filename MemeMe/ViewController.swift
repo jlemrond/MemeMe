@@ -54,6 +54,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     setUpNavigationBar()
     setUpToolbar()
+    subscribeToKeyboardNotifications()
     
     imagePickerController.delegate = self
     
@@ -90,6 +91,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   override func preferredStatusBarStyle() -> UIStatusBarStyle {
     return UIStatusBarStyle.LightContent
+  }
+  
+  override func viewWillDisappear(animated: Bool) {
+    unsubscriveToKeyboardNotifications()
   }
   
   
@@ -193,6 +198,41 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
       index.defaultTextAttributes = fontAttributes
       index.textAlignment = .Center
     }
+  }
+  
+  
+  
+  
+  
+  // ******************************************************************
+  //   MARK: Keyboard Methods
+  // ******************************************************************
+  
+  func subscribeToKeyboardNotifications() {
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+  }
+  
+  func unsubscriveToKeyboardNotifications() {
+    NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+  }
+  
+  func keyboardWillShow(notification: NSNotification) {
+    if bottomTextField.isFirstResponder() {
+      view.frame.origin.y -= getKeyboardHeight(notification)
+    }
+  }
+  
+  func keyboardWillHide(notification: NSNotification) {
+    if bottomTextField.isFirstResponder() {
+      view.frame.origin.y += getKeyboardHeight(notification)
+    }
+  }
+  
+  func getKeyboardHeight(notification: NSNotification) -> CGFloat {
+    let userInfo = notification.userInfo
+    let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
+    return keyboardSize.CGRectValue().height
   }
   
   
