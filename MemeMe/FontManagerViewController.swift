@@ -157,7 +157,7 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     
   }
   
-  @IBAction func changeButtonColor() {
+  func changeButtonColor() {
     
     let red = CGFloat(colorSliders["Red"]!!.value / 255.0)
     let green = CGFloat(colorSliders["Green"]!!.value / 255.0)
@@ -392,13 +392,12 @@ extension UIColor {
       }
       rgbArray.append(CGFloat(value))
     }
-    
-    print("rgbArray: \(rgbArray)")
+  
     return rgbArray
   }
   
   // Get the individual components.
-  func red() -> CGFloat{
+  func red() -> CGFloat {
     return self.getRGBComponents()[0]
   }
   

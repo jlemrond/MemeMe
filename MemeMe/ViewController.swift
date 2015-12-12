@@ -20,6 +20,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   var toolbar = UIToolbar()
   var cameraButton = UIButton()
   var albumButton = UIButton()
+  var navBarTopConstraint = NSLayoutConstraint()
   
   @IBOutlet weak var pickedImage: UIImageView!
   @IBOutlet weak var topTextField: UITextField!
@@ -33,7 +34,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   var memeTextAttributes = [
     NSStrokeColorAttributeName : UIColor.blackColor(),
     NSForegroundColorAttributeName : UIColor.whiteColor(),
-    NSFontAttributeName : UIFont(name: "AvenirNextCondensed-Heavy", size: 40)!,
+    NSFontAttributeName : UIFont(name: "Impact", size: 40)!,
     NSStrokeWidthAttributeName : "-4.0",
   ]
   var textFieldArray: [UITextField] = []
@@ -74,6 +75,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   override func viewWillAppear(animated: Bool) {
     // If a camera is not available, make camera button unuseable
     cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+  }
+  
+  override func viewDidLayoutSubviews() {
+    
+    if view.bounds.size.height > view.bounds.size.width {
+      navBarTopConstraint.constant = 20
+      navigationBar.frame.size = CGSize(width: navigationBar.frame.size.width, height: 44)
+    } else {
+      navBarTopConstraint.constant = 0
+      navigationBar.frame.size = CGSize(width: navigationBar.frame.size.width, height: 32)
+    }
   }
   
   override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -158,7 +170,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
   
     guard let popoverFontController = fontManagerViewController.popoverPresentationController else {
-      // Presents in legacy modal view (non-popover) for iOS 7 and earlier.
       self.presentViewController(fontManagerViewController, animated: true, completion: nil)
       print("Popover Presentation Controller not available.  Legacy veresion used.")
       return
@@ -172,7 +183,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   }
   
   func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-    // Required method to use popover modal presentations style on iPhones.  Only used in iOS 8 and later.
     return .None
   }
   
@@ -183,7 +193,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
       index.defaultTextAttributes = fontAttributes
       index.textAlignment = .Center
     }
-    
   }
   
   
@@ -195,13 +204,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   func setUpNavigationBar() {
     // Sets up navigation bar along with buttons.
-    
-    navigationBar = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.size.width, height: 44))
     navigationBar.barTintColor = ProjectColors.getNavyColor()
     navigationBar.translucent = false
 
     // TODO: Add Share and Cancel Buttons
-    let fontButton = UIBarButtonItem(title: "Font", style: .Plain, target: self, action: "fontManagerSelected:")
+    let fontButton = UIBarButtonItem(title: "Aa", style: .Plain, target: self, action: "fontManagerSelected:")
+    fontButton.setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.whiteColor(),
+                                       NSFontAttributeName : UIFont(name: "FontAwesome", size: 18)!],
+                                       forState: .Normal)
     
     // TODO: Add Actions to Bar Buttons
     let leftButton = UIBarButtonItem(title: nil, style: .Plain, target: self, action: nil)
@@ -212,19 +222,21 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     navigationBar.items = [navigationItem]
     
     self.view.addSubview(navigationBar)
-    view.addConstraints(navigationBar.pinToParent(top: 20, bottom: nil, leading: 0, trailing: 0))
+    
+    view.addConstraints(navigationBar.pinToParent(top: nil, bottom: nil, leading: 0, trailing: 0))
+    
+    navigationBar.translatesAutoresizingMaskIntoConstraints = false
+    navBarTopConstraint = NSLayoutConstraint(item: navigationBar, attribute: .Top, relatedBy: .Equal, toItem: navigationBar.superview, attribute: .Top, multiplier: 1, constant: 20)
+    view.addConstraint(navBarTopConstraint)
     
   }
   
   
   func setUpToolbar() {
     // Sets up toolbar along with buttons.
-    
-    toolbar = UIToolbar(frame: CGRect(x: 0, y: self.view.frame.size.height - 54, width: self.view.frame.size.width, height: 44))
     toolbar.barTintColor = ProjectColors.getNavyColor()
     toolbar.translucent = false
     
-    // TODO: Add Cancel Button
     albumButton = UIButton(frame: CGRect(x: 0, y: 0, width: 140, height: 30))
     albumButton.addTarget(self, action: "selectImageFromAlbum", forControlEvents: .TouchUpInside)
     albumButton.setTitle("\u{f03e}", forState: .Normal)
@@ -239,7 +251,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     cameraButton.backgroundColor = ProjectColors.getYellowColor()
     cameraButton.setTitleColor(ProjectColors.getNavyColor(), forState: .Normal)
     
-    // TODO: Add Actions to Bar Buttons
     let leftToolbarButton = UIBarButtonItem()
     leftToolbarButton.customView = albumButton
     let rightToolbarButton = UIBarButtonItem()
@@ -276,7 +287,7 @@ extension UIView {
     
     if let top = top {
       let topConstant = CGFloat(top)
-      let topConstraint = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: self.superview, attribute: .Top, multiplier: 1, constant: topConstant)
+      let topConstraint = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: self.superview, attribute: .TopMargin, multiplier: 1, constant: topConstant)
       constraintArray.append(topConstraint)
     }
     

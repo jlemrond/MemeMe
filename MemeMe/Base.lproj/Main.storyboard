@@ -169,7 +169,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ae1-Qe-lob" firstAttribute="width" secondItem="g0C-5B-KDH" secondAttribute="width" id="2cp-3g-33G"/>
                             <constraint firstItem="hrE-Fg-RUW" firstAttribute="centerX" secondItem="ae1-Qe-lob" secondAttribute="centerX" id="5of-Z0-Nwr"/>
@@ -211,7 +211,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aYo-fp-uKI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1040" y="499"/>
+            <point key="canvasLocation" x="1013" y="243"/>
         </scene>
     </scenes>
 </document>
