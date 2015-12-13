@@ -19,13 +19,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   var cameraButton = UIButton()
   var albumButton = UIButton()
+  var shareButton = UIBarButtonItem()
+  
   var navBarTopConstraint = NSLayoutConstraint()
   var imageViewScale: CGFloat?
   var imageScale = CGFloat()
-  var resizedTopConst = CGFloat()
-  var resizedBotConst = CGFloat()
-  var defaultTopConst: CGFloat = 20
-  var defaultBotConst: CGFloat = 20
+  var defaultConstraint: CGFloat = 0
+  var activeConstratint: CGFloat = 0
+  
+  var shareImage = UIImage()
+  var pickedImageOrigin = CGPoint()
+  var pickedImageSize = CGSize()
 
   @IBOutlet weak var navigationBar: UINavigationBar!
   @IBOutlet weak var toolbar: UIToolbar!
@@ -35,6 +39,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   @IBOutlet weak var textStack: UIStackView!
   @IBOutlet weak var textStackTopConst: NSLayoutConstraint!
   @IBOutlet weak var textStackBottomConst: NSLayoutConstraint!
+  @IBOutlet weak var imageView: UIView!
+  @IBOutlet weak var imageViewTopConst: NSLayoutConstraint!
+  @IBOutlet weak var imageViewBotConst: NSLayoutConstraint!
+  @IBOutlet weak var parentView: UIView!
+  @IBOutlet weak var parentViewTopConst: NSLayoutConstraint!
+  @IBOutlet weak var parentViewBotConst: NSLayoutConstraint!
   
   let imagePickerController = UIImagePickerController()
   let textDelegate = textFieldDelegate()
@@ -58,11 +68,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    print("View Did Load Called")
     
     // Establish the scale factor for portrait mode.
     if imageViewScale == nil {
-      imageViewScale = scaleFactor(view.frame.size)
-      print(imageViewScale)
+      let viewSize = CGSize(width: view.frame.size.width, height: view.frame.size.height - 44 - 64)
+      imageViewScale = scaleFactor(viewSize)
     }
     
     view.backgroundColor = ProjectColors.getNavyColor()
@@ -71,20 +82,28 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     setUpNavigationBar()
     setUpToolbar()
     setUpTextFields()
-    subscribeToKeyboardNotifications()
     
     imagePickerController.delegate = self
+    
+    imageView.layer.borderWidth = 3.0
+    imageView.layer.borderColor = UIColor.redColor().CGColor
     
   }
   
   override func viewWillAppear(animated: Bool) {
+    print("View Will Appear Called")
     
     // If a camera is not available, make camera button unuseable
     cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+    subscribeToKeyboardNotifications()
+    
+    parentViewTopConst.constant = defaultConstraint
+    parentViewBotConst.constant = defaultConstraint
     
   }
   
   override func viewDidLayoutSubviews() {
+    print("View Did Layout Called")
     
     // Move and manipulate Navigation Bar when the frame is rotated.
     if view.bounds.size.height > view.bounds.size.width {
@@ -94,6 +113,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
       navBarTopConstraint.constant = 0
       navigationBar.frame.size = CGSize(width: navigationBar.frame.size.width, height: 32)
     }
+    
+    isImageAvailable()
   
   }
   
@@ -105,15 +126,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     unsubscriveToKeyboardNotifications()
   }
   
-  override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-    resizeIfPortait()
-  }
-  
   
   
   
   // ******************************************************************
-  //   MARK: Get Image Methods
+  //   MARK: Image Methods
   // ******************************************************************
   
   // Select Image From Album and Camera methods.
@@ -151,11 +168,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // Make the visable image view the image selected by the user.
     pickedImage.image = selectedImage
     pickedImage.contentMode = .ScaleAspectFit
-    pickedImage.frame.size = pickedImage.sizeThatFits(selectedImage.size)
+    //pickedImage.frame.size = pickedImage.sizeThatFits(selectedImage.size)
     
-    if let image = pickedImage.image {
-      resizeImageView(image)
-    }
+    isImageAvailable()
     
     // Dismiss view controller
     dismissViewControllerAnimated(true, completion: nil)
@@ -170,42 +185,53 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   
   
-  // Image manipulation methods
+  // Image Text manipulation methods
   
-  func resizeImageView(image: UIImage) {
+  func resizeTextStack(image: UIImage) {
     // Establish constraints for an image in Portrait View.
-    
-    print(textStack.frame.size)
+    print("Resize Text Called")
     
     imageScale = scaleFactor(image.size)
     
     if imageScale > imageViewScale {
-      let newStackHeight = textStack.frame.size.width + 40 / imageScale
-      print("New Image Heigh: \(newStackHeight)")
-      print("TextStack Height: \(textStack.frame.size.height)")
-      resizedTopConst = (textStack.frame.size.height - newStackHeight) / 2
-      resizedBotConst = (textStack.frame.size.height - newStackHeight) / 2
+      print("Active CAlled")
+      let newStackHeight = (parentView.frame.size.width) / imageScale
+      activeConstratint = (parentView.frame.size.height - newStackHeight) / 2
     } else {
-      resizedTopConst = defaultTopConst
-      resizedBotConst = defaultBotConst
+      print("Default CAlled")
+      activeConstratint = defaultConstraint
     }
     
-    resizeIfPortait()
-    print(textStack.frame.size)
-    
+    textStackTopConst.constant = activeConstratint
+    textStackBottomConst.constant = activeConstratint
+
   }
   
   func resetTextStackConstraints() {
-    textStackTopConst.constant = defaultTopConst
-    textStackBottomConst.constant = defaultBotConst
+    print("Reset Text Constraints Called")
+    textStackTopConst.constant = defaultConstraint
+    textStackBottomConst.constant = defaultConstraint
   }
   
-  func resizeIfPortait() {
+  func resizeIfPortait(image: UIImage) {
+    print("Resize if Portrait Called")
+    
     if UIDevice.currentDevice().orientation == UIDeviceOrientation.Portrait {
-      textStackTopConst.constant = resizedTopConst
-      textStackBottomConst.constant = resizedBotConst
+      resizeTextStack(image)
     } else {
       resetTextStackConstraints()
+    }
+  
+  }
+  
+  func isImageAvailable() {
+    print("Check if image is available called")
+    
+    if let image = pickedImage.image {
+      shareButton.enabled = true
+      resizeIfPortait(image)
+    } else {
+      shareButton.enabled = false
     }
   }
   
@@ -216,6 +242,64 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     let width  = object.width
     return width / height
   }
+  
+  func checkImageWidth(image: UIImage) {
+    if image.size.width < view.frame.size.width {
+      print("ImageLessThan")
+      pickedImage.frame.size = CGSize(width: view.frame.size.width, height: view.frame.size.height - toolbar.frame.size.height - navigationBar.frame.size.height)
+    }
+  }
+  
+  
+  // Save Image Methods
+  
+  func generateMemedImage() -> UIImage {
+
+    UIGraphicsBeginImageContext(parentView.frame.size)
+    parentView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+    let memedImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    return memedImage
+  }
+  
+  func save() -> UIImage {
+    return generateMemedImage()
+  }
+  
+  func share() {
+    let group: dispatch_group_t = dispatch_group_create()
+    
+    dispatch_group_async(group, dispatch_get_main_queue()) { () -> Void in
+      print("IN GROUP")
+      self.resizeImageView()
+      print("DONE WITH GROUP")
+    }
+    
+    dispatch_group_notify(group, dispatch_get_main_queue()) { () -> Void in
+      self.shareImage = self.generateMemedImage()
+      let activityViewController = UIActivityViewController(activityItems: [self.shareImage], applicationActivities: nil)
+      self.presentViewController(activityViewController, animated: true, completion: { () -> Void in
+        self.parentViewTopConst.constant = self.defaultConstraint
+        self.parentViewBotConst.constant = self.defaultConstraint
+      })
+    }
+    
+  }
+  
+  func resizeImageView() {
+    imageViewTopConst.constant = defaultConstraint
+    imageViewBotConst.constant = defaultConstraint
+    textStackTopConst.constant = defaultConstraint
+    textStackBottomConst.constant = defaultConstraint
+    if UIDevice.currentDevice().orientation == UIDeviceOrientation.Portrait {
+      parentViewTopConst.constant = activeConstratint
+      parentViewBotConst.constant = activeConstratint
+    }
+  }
+
+  
+  
   
   
   
@@ -268,8 +352,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
       index.defaultTextAttributes = fontAttributes
       index.textAlignment = .Center
     }
+    
+    isImageAvailable()
   }
-  
   
   
   
@@ -281,10 +366,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   func subscribeToKeyboardNotifications() {
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+    print("Notications subscribed")
   }
   
   func unsubscriveToKeyboardNotifications() {
     NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+    NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    print("Notification unsubscribed")
   }
   
   func keyboardWillShow(notification: NSNotification) {
@@ -316,18 +404,25 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // Sets up navigation bar along with buttons.
     navigationBar.barTintColor = ProjectColors.getNavyColor()
     navigationBar.translucent = false
+    
+    let attributes =   [NSForegroundColorAttributeName : ProjectColors.getYellowColor(),
+                              NSFontAttributeName : UIFont(name: "FontAwesome", size: 18)!]
 
     // TODO: Add Share and Cancel Buttons
     let fontButton = UIBarButtonItem(title: "Aa", style: .Plain, target: self, action: "fontManagerSelected:")
-    fontButton.setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.whiteColor(),
-                                       NSFontAttributeName : UIFont(name: "FontAwesome", size: 18)!],
-                                       forState: .Normal)
+    fontButton.setTitleTextAttributes(attributes, forState: .Normal)
+    
+    shareButton = UIBarButtonItem(title: "\u{f045}", style: .Plain, target: self, action: "share")
+    shareButton.setTitleTextAttributes(attributes, forState: .Normal)
+    shareButton.enabled = false
     
     // TODO: Add Actions to Bar Buttons
-    let leftButton = UIBarButtonItem(title: nil, style: .Plain, target: self, action: nil)
+    let cancelButton = UIBarButtonItem(title: "\u{f00d}", style: .Plain, target: self, action: nil)
+    cancelButton.setTitleTextAttributes(attributes, forState: .Normal)
     
-    navigationItem.rightBarButtonItem = fontButton
-    navigationItem.leftBarButtonItem =  leftButton
+    //navigationItem.rightBarButtonItem = fontButton
+    navigationItem.rightBarButtonItems = [shareButton,fontButton]
+    navigationItem.leftBarButtonItem =  cancelButton
     
     navigationBar.items = [navigationItem]
     

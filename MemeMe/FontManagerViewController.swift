@@ -113,7 +113,7 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     ]
     
     if let newFontAttributes = newFontAttributes {
-       delegate.changeFontAttributes(newFontAttributes)
+      delegate.changeFontAttributes(newFontAttributes)
     }
     
   }
@@ -414,7 +414,3 @@ extension UIColor {
   }
   
 }
-
-
-
-

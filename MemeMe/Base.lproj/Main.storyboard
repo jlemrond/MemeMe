@@ -17,56 +17,86 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G0f-PL-HYS">
-                                <rect key="frame" x="58" y="78" width="240" height="128"/>
-                                <edgeInsets key="layoutMargins" top="8" left="0.0" bottom="0.0" right="0.0"/>
-                            </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="Tb1-ix-9yN">
-                                <rect key="frame" x="180" y="121" width="16" height="17"/>
-                                <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HH6-4P-xpY">
-                                        <rect key="frame" x="0.0" y="0.0" width="8" height="17"/>
-                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZlW-YL-uo8">
-                                        <rect key="frame" x="8" y="0.0" width="8" height="17"/>
-                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
-                                    </textField>
-                                </subviews>
-                                <variation key="widthClass=compact" axis="vertical" misplaced="YES">
-                                    <rect key="frame" x="10" y="74" width="380" height="452"/>
-                                </variation>
-                            </stackView>
                             <navigationBar contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yQx-Kv-Y09">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="-101" width="0.0" height="44"/>
                             </navigationBar>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tJQ-ex-8e3">
-                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="495" width="600" height="44"/>
                                 <items/>
                             </toolbar>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AjK-eZ-Z87">
+                                <rect key="frame" x="180" y="236" width="240" height="128"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G0f-PL-HYS">
+                                        <rect key="frame" x="-180" y="36" width="600" height="57"/>
+                                        <edgeInsets key="layoutMargins" top="8" left="0.0" bottom="0.0" right="0.0"/>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="Tb1-ix-9yN">
+                                        <rect key="frame" x="-170" y="47" width="600" height="34"/>
+                                        <subviews>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HH6-4P-xpY">
+                                                <rect key="frame" x="0.0" y="0.0" width="600" height="17"/>
+                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
+                                            </textField>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZlW-YL-uo8">
+                                                <rect key="frame" x="0.0" y="17" width="600" height="17"/>
+                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
+                                            </textField>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <variation key="widthClass=compact" axis="vertical" misplaced="YES">
+                                            <rect key="frame" x="10" y="74" width="380" height="452"/>
+                                        </variation>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="ZlW-YL-uo8" firstAttribute="centerX" secondItem="AjK-eZ-Z87" secondAttribute="centerX" id="6mx-nX-oJj"/>
+                                    <constraint firstItem="HH6-4P-xpY" firstAttribute="top" secondItem="AjK-eZ-Z87" secondAttribute="top" id="7Vr-Qk-c0Z"/>
+                                    <constraint firstAttribute="bottom" secondItem="ZlW-YL-uo8" secondAttribute="bottom" id="CqD-Hs-7Sf"/>
+                                    <constraint firstItem="ZlW-YL-uo8" firstAttribute="width" secondItem="AjK-eZ-Z87" secondAttribute="width" id="Gww-bt-7K5"/>
+                                    <constraint firstItem="HH6-4P-xpY" firstAttribute="width" secondItem="AjK-eZ-Z87" secondAttribute="width" id="bXN-gF-SQX"/>
+                                    <constraint firstItem="G0f-PL-HYS" firstAttribute="width" secondItem="AjK-eZ-Z87" secondAttribute="width" id="f6p-Id-ruR"/>
+                                    <constraint firstItem="HH6-4P-xpY" firstAttribute="centerX" secondItem="AjK-eZ-Z87" secondAttribute="centerX" id="kZW-cj-hNh"/>
+                                    <constraint firstItem="G0f-PL-HYS" firstAttribute="centerY" secondItem="AjK-eZ-Z87" secondAttribute="centerY" id="mq9-av-zmR"/>
+                                    <constraint firstItem="G0f-PL-HYS" firstAttribute="height" secondItem="AjK-eZ-Z87" secondAttribute="height" id="qAt-Zk-Lkx"/>
+                                    <constraint firstItem="G0f-PL-HYS" firstAttribute="centerX" secondItem="AjK-eZ-Z87" secondAttribute="centerX" id="zQa-dU-IoT"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lfh-Yw-Wsu">
+                                <rect key="frame" x="234" y="197" width="240" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="G0f-PL-HYS" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="7AA-cy-fWt"/>
-                            <constraint firstItem="Tb1-ix-9yN" firstAttribute="top" secondItem="yQx-Kv-Y09" secondAttribute="bottom" constant="20" id="7yx-6u-ZFU"/>
-                            <constraint firstItem="Tb1-ix-9yN" firstAttribute="centerX" secondItem="G0f-PL-HYS" secondAttribute="centerX" id="DNf-Mj-sjk"/>
-                            <constraint firstItem="tJQ-ex-8e3" firstAttribute="top" secondItem="G0f-PL-HYS" secondAttribute="bottom" id="V0m-lm-Fcc"/>
-                            <constraint firstItem="G0f-PL-HYS" firstAttribute="top" secondItem="yQx-Kv-Y09" secondAttribute="bottom" id="iUd-z2-Mwt"/>
-                            <constraint firstItem="tJQ-ex-8e3" firstAttribute="top" secondItem="Tb1-ix-9yN" secondAttribute="bottom" constant="20" id="mbg-u6-CdI"/>
+                            <constraint firstItem="lfh-Yw-Wsu" firstAttribute="top" secondItem="yQx-Kv-Y09" secondAttribute="bottom" id="AwY-1W-TFb"/>
+                            <constraint firstItem="tJQ-ex-8e3" firstAttribute="top" secondItem="lfh-Yw-Wsu" secondAttribute="bottom" id="Mg6-Tq-nnz"/>
+                            <constraint firstItem="AjK-eZ-Z87" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="NuC-37-TF9"/>
+                            <constraint firstItem="lfh-Yw-Wsu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="jR1-Jj-aSm"/>
+                            <constraint firstItem="lfh-Yw-Wsu" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="laP-b2-UvE"/>
+                            <constraint firstItem="tJQ-ex-8e3" firstAttribute="top" secondItem="AjK-eZ-Z87" secondAttribute="bottom" id="pG4-C0-cQn"/>
+                            <constraint firstItem="AjK-eZ-Z87" firstAttribute="top" secondItem="yQx-Kv-Y09" secondAttribute="bottom" id="tfO-yd-3rL"/>
                             <constraint firstItem="tJQ-ex-8e3" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="vBj-th-LEe"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="bottomTextField" destination="ZlW-YL-uo8" id="nbf-r0-uPT"/>
+                        <outlet property="imageView" destination="lfh-Yw-Wsu" id="zVC-JI-Ocb"/>
+                        <outlet property="imageViewBotConst" destination="Mg6-Tq-nnz" id="hu2-Ps-bt5"/>
+                        <outlet property="imageViewTopConst" destination="AwY-1W-TFb" id="dgB-gy-P2M"/>
                         <outlet property="navigationBar" destination="yQx-Kv-Y09" id="nLT-d9-K9h"/>
+                        <outlet property="parentView" destination="AjK-eZ-Z87" id="IiR-7f-sKO"/>
+                        <outlet property="parentViewBotConst" destination="pG4-C0-cQn" id="WRk-Ke-Wqq"/>
+                        <outlet property="parentViewTopConst" destination="tfO-yd-3rL" id="cWa-HS-YUe"/>
                         <outlet property="pickedImage" destination="G0f-PL-HYS" id="yHe-MT-tSQ"/>
                         <outlet property="textStack" destination="Tb1-ix-9yN" id="PLm-sE-Nuv"/>
-                        <outlet property="textStackBottomConst" destination="mbg-u6-CdI" id="Ap5-2Q-kQD"/>
-                        <outlet property="textStackTopConst" destination="7yx-6u-ZFU" id="qdJ-cT-ouz"/>
+                        <outlet property="textStackBottomConst" destination="CqD-Hs-7Sf" id="XCl-ci-C37"/>
+                        <outlet property="textStackTopConst" destination="7Vr-Qk-c0Z" id="8t4-Ug-72F"/>
                         <outlet property="toolbar" destination="tJQ-ex-8e3" id="gBb-OR-xf1"/>
                         <outlet property="topTextField" destination="HH6-4P-xpY" id="mnA-uO-v5k"/>
                     </connections>
@@ -189,7 +219,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aYo-fp-uKI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1027" y="533"/>
+            <point key="canvasLocation" x="670" y="209"/>
         </scene>
     </scenes>
 </document>
