@@ -12,6 +12,10 @@ import Foundation
 class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, FontManagerViewControllerDelegate {
 
   
+  // TODO: List
+  // If view is smaller than Parent View bounds.  Set constraints to
+  // Remove Pin to Parent.
+  
   
   // ******************************************************************
   //   MARK: Global Variables / IBOutlets
@@ -77,7 +81,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     view.backgroundColor = ProjectColors.getNavyColor()
-    pickedImage.backgroundColor = ProjectColors.getIvoryColor()
+    parentView.backgroundColor = ProjectColors.getIvoryColor()
     
     setUpNavigationBar()
     setUpToolbar()
@@ -104,16 +108,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   override func viewDidLayoutSubviews() {
     print("View Did Layout Called")
-    
-    // Move and manipulate Navigation Bar when the frame is rotated.
-    if view.bounds.size.height > view.bounds.size.width {
-      navBarTopConstraint.constant = 20
-      navigationBar.frame.size = CGSize(width: navigationBar.frame.size.width, height: 44)
-    } else {
-      navBarTopConstraint.constant = 0
-      navigationBar.frame.size = CGSize(width: navigationBar.frame.size.width, height: 32)
-    }
-    
+
     isImageAvailable()
   
   }
@@ -168,7 +163,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // Make the visable image view the image selected by the user.
     pickedImage.image = selectedImage
     pickedImage.contentMode = .ScaleAspectFit
-    //pickedImage.frame.size = pickedImage.sizeThatFits(selectedImage.size)
     
     isImageAvailable()
     
@@ -194,11 +188,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     imageScale = scaleFactor(image.size)
     
     if imageScale > imageViewScale {
-      print("Active CAlled")
-      let newStackHeight = (parentView.frame.size.width) / imageScale
+      print("Active constraints implimented")
+      let newStackHeight = checkImageSize(image, scale: imageScale)
       activeConstratint = (parentView.frame.size.height - newStackHeight) / 2
     } else {
-      print("Default CAlled")
+      print("Default constraints implimented")
       activeConstratint = defaultConstraint
     }
     
@@ -224,6 +218,21 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   }
   
+  func checkImageSize(image: UIImage, scale: CGFloat) -> CGFloat {
+    // If image does not neeed to be scaled down, the absolute height of 
+    // the image will be returned, else the scaled down size of the image
+    // is returned.
+    
+    if image.size.width < parentView.frame.size.width  &&
+       image.size.height < parentView.frame.size.height {
+      
+      return image.size.height
+        
+    } else {
+      return parentView.frame.size.width / scale
+    }
+  }
+  
   func isImageAvailable() {
     print("Check if image is available called")
     
@@ -232,6 +241,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
       resizeIfPortait(image)
     } else {
       shareButton.enabled = false
+      resetTextStackConstraints()
     }
   }
   
@@ -251,10 +261,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   }
   
   
+  
   // Save Image Methods
   
   func generateMemedImage() -> UIImage {
-
+    // Create image from the parent view
+    
     UIGraphicsBeginImageContext(parentView.frame.size)
     parentView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
     let memedImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -263,6 +275,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     return memedImage
   }
   
+  // TODO: Set up model saving.
   func save() -> UIImage {
     return generateMemedImage()
   }
@@ -298,9 +311,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
   }
 
+  // Cancel Button.
   
-  
-  
+  func cancelImage() {
+    pickedImage.image = nil
+    isImageAvailable()
+  }
   
   
   
@@ -309,7 +325,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   // ******************************************************************
   
   func fontManagerSelected(sender: UIBarButtonItem) {
-    // Present the Font Manager via Modal Popover.
+    // Present the Font Manager via Modal Popover
     print("Font manager selected")
     
     var fontManagerViewController = FontManagerViewController()
@@ -341,9 +357,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     self.presentViewController(fontManagerViewController, animated: true, completion: nil)
   }
   
+  
   func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
     return .None
   }
+  
   
   func changeFontAttributes(fontAttributes: [String : NSObject]) {
     memeTextAttributes = fontAttributes
@@ -417,7 +435,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     shareButton.enabled = false
     
     // TODO: Add Actions to Bar Buttons
-    let cancelButton = UIBarButtonItem(title: "\u{f00d}", style: .Plain, target: self, action: nil)
+    let cancelButton = UIBarButtonItem(title: "\u{f00d}", style: .Plain, target: self, action: "cancelImage")
     cancelButton.setTitleTextAttributes(attributes, forState: .Normal)
     
     //navigationItem.rightBarButtonItem = fontButton
@@ -429,10 +447,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     self.view.addSubview(navigationBar)
     
     view.addConstraints(navigationBar.pinToParent(top: nil, bottom: nil, leading: 0, trailing: 0))
-    
-    navigationBar.translatesAutoresizingMaskIntoConstraints = false
-    navBarTopConstraint = NSLayoutConstraint(item: navigationBar, attribute: .Top, relatedBy: .Equal, toItem: navigationBar.superview, attribute: .Top, multiplier: 1, constant: 20)
-    view.addConstraint(navBarTopConstraint)
     
   }
   
