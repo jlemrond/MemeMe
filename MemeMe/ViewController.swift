@@ -13,8 +13,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
 
   
   // TODO: List
-  // If view is smaller than Parent View bounds.  Set constraints to
-  // Remove Pin to Parent.
+  // Add Crop
+  // Change color slider thumb
+  // Remove or use "Image View"
+  // Edit Color Scheme
+  // Check functionality while other views are visable and device is rotated
+  // Optional Binding in FontManager
   
   
   // ******************************************************************
@@ -24,12 +28,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   var cameraButton = UIButton()
   var albumButton = UIButton()
   var shareButton = UIBarButtonItem()
-  
+  var fontButton = UIBarButtonItem()
+  var cancelButton = UIBarButtonItem()
+  var saveButton = UIBarButtonItem()
+
   var navBarTopConstraint = NSLayoutConstraint()
   var imageViewScale: CGFloat?
   var imageScale = CGFloat()
   var defaultConstraint: CGFloat = 0
   var activeConstratint: CGFloat = 0
+  var currentDeviceHeight: CGFloat!
   
   var shareImage = UIImage()
   var pickedImageOrigin = CGPoint()
@@ -53,7 +61,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   let imagePickerController = UIImagePickerController()
   let textDelegate = textFieldDelegate()
   
-  
   // Default text attributes for top and bottom text fields.
   var memeTextAttributes = [
     NSStrokeColorAttributeName : UIColor.blackColor(),
@@ -63,11 +70,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   ]
   var textFieldArray: [UITextField] = []
   
+  var memes: [Meme] = []
+  
   
   
   
   // ******************************************************************
-  //   MARK: Load and Appear Methods
+  //   MARK: UIView Methods
   // ******************************************************************
   
   override func viewDidLoad() {
@@ -81,7 +90,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     view.backgroundColor = ProjectColors.getNavyColor()
-    parentView.backgroundColor = ProjectColors.getIvoryColor()
+    parentView.backgroundColor = ProjectColors.getBlueColor()
     
     setUpNavigationBar()
     setUpToolbar()
@@ -106,11 +115,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
   }
   
+  // Reset frame when device is rotated
   override func viewDidLayoutSubviews() {
-    print("View Did Layout Called")
-
-    isImageAvailable()
-  
+    if view.frame.height != currentDeviceHeight {
+      print("rotation called")
+      isImageAvailable()
+      currentDeviceHeight = view.frame.height
+    }
   }
   
   override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -218,18 +229,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   }
   
+  // If image does not neeed to be scaled down, the absolute height of
+  // the image will be returned, else the scaled down size of the image
+  // is returned.
   func checkImageSize(image: UIImage, scale: CGFloat) -> CGFloat {
-    // If image does not neeed to be scaled down, the absolute height of 
-    // the image will be returned, else the scaled down size of the image
-    // is returned.
     
     if image.size.width < parentView.frame.size.width  &&
        image.size.height < parentView.frame.size.height {
-      
-      return image.size.height
-        
+        print("Image Size Used")
+        return image.size.height
     } else {
-      return parentView.frame.size.width / scale
+        print("Parent View Used")
+        return parentView.frame.size.width / scale
     }
   }
   
@@ -245,28 +256,19 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
   }
   
+  // Returns the scale for the given object.
   func scaleFactor(object: CGSize) -> CGFloat {
-    // Returns the scale for the give object.
-    
     let height = object.height
     let width  = object.width
     return width / height
-  }
-  
-  func checkImageWidth(image: UIImage) {
-    if image.size.width < view.frame.size.width {
-      print("ImageLessThan")
-      pickedImage.frame.size = CGSize(width: view.frame.size.width, height: view.frame.size.height - toolbar.frame.size.height - navigationBar.frame.size.height)
-    }
   }
   
   
   
   // Save Image Methods
   
+  // Create image from the parent view
   func generateMemedImage() -> UIImage {
-    // Create image from the parent view
-    
     UIGraphicsBeginImageContext(parentView.frame.size)
     parentView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
     let memedImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -275,41 +277,47 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     return memedImage
   }
   
-  // TODO: Set up model saving.
-  func save() -> UIImage {
-    return generateMemedImage()
+  // Save the current image as a 'Meme' Struct
+  func save() {
+    guard let image = pickedImage.image else { return }
+    
+    let savedImage = Meme(top: topTextField.text!, bottom: bottomTextField.text!, image: image, memedImage: generateMemedImage())
+    memes.append(savedImage)
+    print(memes)
   }
   
+  // Generates image to be saved or shared and opens Activity View Controller
   func share() {
+    
     let group: dispatch_group_t = dispatch_group_create()
     
     dispatch_group_async(group, dispatch_get_main_queue()) { () -> Void in
-      print("IN GROUP")
       self.resizeImageView()
-      print("DONE WITH GROUP")
     }
     
     dispatch_group_notify(group, dispatch_get_main_queue()) { () -> Void in
+      // Waits for view to be resized to image size before executing
       self.shareImage = self.generateMemedImage()
       let activityViewController = UIActivityViewController(activityItems: [self.shareImage], applicationActivities: nil)
       self.presentViewController(activityViewController, animated: true, completion: { () -> Void in
         self.parentViewTopConst.constant = self.defaultConstraint
         self.parentViewBotConst.constant = self.defaultConstraint
+        self.textStackTopConst.constant = self.activeConstratint
+        self.textStackBottomConst.constant = self.activeConstratint
       })
     }
     
   }
   
   func resizeImageView() {
-    imageViewTopConst.constant = defaultConstraint
-    imageViewBotConst.constant = defaultConstraint
-    textStackTopConst.constant = defaultConstraint
-    textStackBottomConst.constant = defaultConstraint
+    print("Resize Image View")
+    resetTextStackConstraints()
     if UIDevice.currentDevice().orientation == UIDeviceOrientation.Portrait {
       parentViewTopConst.constant = activeConstratint
       parentViewBotConst.constant = activeConstratint
     }
   }
+  
 
   // Cancel Button.
   
@@ -353,6 +361,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // Configure popover paramaters
     popoverFontController.delegate = self
     popoverFontController.barButtonItem = sender
+    popoverFontController.backgroundColor = ProjectColors.getBlueColor()
     
     self.presentViewController(fontManagerViewController, animated: true, completion: nil)
   }
@@ -423,36 +432,35 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     navigationBar.barTintColor = ProjectColors.getNavyColor()
     navigationBar.translucent = false
     
-    let attributes =   [NSForegroundColorAttributeName : ProjectColors.getYellowColor(),
-                              NSFontAttributeName : UIFont(name: "FontAwesome", size: 18)!]
+    let attributes = [NSFontAttributeName : UIFont(name: "FontAwesome", size: 18)!]
 
-    // TODO: Add Share and Cancel Buttons
-    let fontButton = UIBarButtonItem(title: "Aa", style: .Plain, target: self, action: "fontManagerSelected:")
+    fontButton = UIBarButtonItem(title: "Aa", style: .Plain, target: self, action: "fontManagerSelected:")
     fontButton.setTitleTextAttributes(attributes, forState: .Normal)
+    fontButton.tintColor = ProjectColors.getYellowColor()
     
-    shareButton = UIBarButtonItem(title: "\u{f045}", style: .Plain, target: self, action: "share")
-    shareButton.setTitleTextAttributes(attributes, forState: .Normal)
+    shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "share")
     shareButton.enabled = false
+    shareButton.tintColor = ProjectColors.getYellowColor()
     
-    // TODO: Add Actions to Bar Buttons
-    let cancelButton = UIBarButtonItem(title: "\u{f00d}", style: .Plain, target: self, action: "cancelImage")
+    cancelButton = UIBarButtonItem(title: "\u{f00d}", style: .Plain, target: self, action: "cancelImage")
     cancelButton.setTitleTextAttributes(attributes, forState: .Normal)
+    cancelButton.tintColor = ProjectColors.getYellowColor()
+    
+    saveButton = UIBarButtonItem(title: "\u{f0c7}", style: .Plain, target: self, action: "save")
+    saveButton.setTitleTextAttributes(attributes, forState: .Normal)
+    saveButton.tintColor = ProjectColors.getYellowColor()
     
     //navigationItem.rightBarButtonItem = fontButton
-    navigationItem.rightBarButtonItems = [shareButton,fontButton]
+    navigationItem.rightBarButtonItems = [saveButton, shareButton, fontButton]
     navigationItem.leftBarButtonItem =  cancelButton
     
     navigationBar.items = [navigationItem]
     
     self.view.addSubview(navigationBar)
-    
-    view.addConstraints(navigationBar.pinToParent(top: nil, bottom: nil, leading: 0, trailing: 0))
-    
   }
   
-  
+  // Sets up toolbar along with buttons.
   func setUpToolbar() {
-    // Sets up toolbar along with buttons.
     toolbar.barTintColor = ProjectColors.getNavyColor()
     toolbar.translucent = false
     
@@ -480,7 +488,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     toolbar.items = [flexSpace, leftToolbarButton, flexSpace, rightToolbarButton, flexSpace]
     
     self.view.addSubview(toolbar)
-    view.addConstraints(toolbar.pinToParent(top: nil, bottom: 0, leading: 0, trailing: 0))
   }
   
   func setUpTextFields() {
@@ -499,52 +506,3 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   }
   
 }  // ViewController End
-
-
-
-
-// ******************************************************************
-//   MARK: UIView Extension
-// ******************************************************************
-
-
-extension UIView {
-  
-  func pinToParent(top top: Int?, bottom: Int?, leading: Int?, trailing: Int?) -> [NSLayoutConstraint] {
-    // Pin a view to it's parent view.  To not include a constraint for a specified direction
-    // simply assign that parameter to nil.
-    
-    self.translatesAutoresizingMaskIntoConstraints = false
-    
-    var constraintArray: [NSLayoutConstraint] = []
-    
-    if let top = top {
-      let topConstant = CGFloat(top)
-      let topConstraint = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: self.superview, attribute: .TopMargin, multiplier: 1, constant: topConstant)
-      constraintArray.append(topConstraint)
-    }
-    
-    if let bottom = bottom {
-      let bottomConstant = CGFloat(bottom)
-      let bottomConstraint = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: self.superview, attribute: .Bottom, multiplier: 1, constant: bottomConstant)
-      constraintArray.append(bottomConstraint)
-    }
-    
-    if let leading = leading {
-      let leadingConstant = CGFloat(leading)
-      let leadingConstraint = NSLayoutConstraint(item: self, attribute: .Leading, relatedBy: .Equal, toItem: self.superview, attribute: .Leading, multiplier: 1, constant: leadingConstant)
-      constraintArray.append(leadingConstraint)
-    }
-    
-    if let trailing = trailing {
-      let trailingConstant = CGFloat(trailing)
-      let trailingConstraint = NSLayoutConstraint(item: self, attribute: .Trailing, relatedBy: .Equal, toItem: self.superview, attribute: .Trailing, multiplier: 1, constant: trailingConstant)
-      
-      constraintArray.append(trailingConstraint)
-    }
-    
-    return constraintArray
-    
-  }
-  
-}

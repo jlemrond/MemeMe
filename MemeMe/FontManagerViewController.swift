@@ -58,17 +58,17 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     addSlidersToColorView()
     
     view.backgroundColor = ProjectColors.getNavyColor()
-    fontLabel.backgroundColor = ProjectColors.getNavyColor()
-    fontLabel.textColor = ProjectColors.getYellowColor()
-    colorLabel.backgroundColor = ProjectColors.getNavyColor()
-    colorLabel.textColor = ProjectColors.getYellowColor()
+    for label in [fontLabel, colorLabel] {
+      label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 10)
+      label.backgroundColor = ProjectColors.getNavyColor()
+      label.textColor = ProjectColors.getYellowColor()
+    }
+    
     colorView.backgroundColor = ProjectColors.getNavyColor()
-    applyFontChangesButton.backgroundColor = ProjectColors.getOrangeColor()
-    applyFontChangesButton.setTitleColor(ProjectColors.getNavyColor(), forState: .Normal)
-    applyFontChangesButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 14)
-    applyFontChangesButton.setTitle("APPLY FONT CHANGES", forState: .Normal)
-    applyFontChangesButton.layer.borderWidth = 2.0
-    applyFontChangesButton.layer.borderColor = ProjectColors.getBlueColor().CGColor
+    applyFontChangesButton.backgroundColor = ProjectColors.getNavyColor()
+    applyFontChangesButton.setTitleColor(ProjectColors.getYellowColor(), forState: .Normal)
+    applyFontChangesButton.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
+    applyFontChangesButton.setTitle("APPLY", forState: .Normal)
   }
   
   override func viewDidLayoutSubviews() {
@@ -121,10 +121,10 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
   @IBAction func selectFontType(sender: UIButton) {
     
     if Int(colorView.frame.size.height) > 10 {
-      expandColorView(-80, colapse: true)
+      expandColorView(-120, colapse: true)
     }
     
-    expandFontScrollView(80, colapse: false)
+    expandFontScrollView(120, colapse: false)
     
   }
   
@@ -137,7 +137,7 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     fontFamilyName = newFont
     
     fontScrollOffset = offsetFontScroll(fontFamilyName)
-    expandFontScrollView(-80, colapse: true)
+    expandFontScrollView(-120, colapse: true)
     
     print("Font Selected: \(fontFamilyName)")
     
@@ -146,13 +146,13 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
   @IBAction func expandColorSelectionTool(sender: UIButton) {
     
     if Int(fontScrollView.frame.size.height) > 45 {
-      expandFontScrollView(-80, colapse: true)
+      expandFontScrollView(-120, colapse: true)
     }
 
     if Int(colorView.frame.size.height) < 30 {
-      expandColorView(80, colapse: false)
+      expandColorView(120, colapse: false)
     } else {
-      expandColorView(-80, colapse: true)
+      expandColorView(-120, colapse: true)
     }
     
   }
@@ -194,12 +194,12 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
       if colapse {
         self.containerView.frame = CGRect(x: self.fontOrigin.x, y: self.fontOrigin.y + self.fontScrollOffset + self.fontScrollView.contentOffset.y, width: self.containerWidth, height: CGFloat(30 * self.fonts.count))
       } else {
-        if (-self.fontScrollOffset) >= CGFloat((self.fonts.count * 30) - 40) {
+        if (-self.fontScrollOffset) >= CGFloat((self.fonts.count * 30) - 60) {
           scrollContentOffset = CGFloat((self.fonts.count * 30) - 110)
-        } else if (-self.fontScrollOffset) <= 59 {
+        } else if (-self.fontScrollOffset) <= 60 {
           scrollContentOffset = 0
         } else {
-          scrollContentOffset = (-self.fontScrollOffset) - 40
+          scrollContentOffset = (-self.fontScrollOffset) - 60
         }
         
         self.fontScrollView.setContentOffset(CGPoint(x: 0, y: scrollContentOffset), animated: true)
@@ -238,7 +238,7 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     // Set the size of the popover frame to be the size of the
     // contents within plus room for margins.
     
-    let popoverHeight = fontLabel.frame.size.height + fontScrollView.frame.size.height + applyFontChangesButton.frame.size.height + colorLabel.frame.size.height + colorButton.frame.size.height + colorView.frame.size.height + (8 * 4)
+    let popoverHeight = fontLabel.frame.size.height + fontScrollView.frame.size.height + applyFontChangesButton.frame.size.height + colorLabel.frame.size.height + colorButton.frame.size.height + colorView.frame.size.height + 36
     let popoverWidth = fontManagerWidth
     contentSize = CGSize(width: popoverWidth, height: popoverHeight)
     
@@ -298,9 +298,8 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     return 0
   }
   
-  
+  // Create three sliders to change the RGB paramaters of the font.
   func addSlidersToColorView() {
-    // Create three sliders to change the RGB paramaters of the font.
     
     colorView.clipsToBounds = true
     colorButton.layer.borderWidth = 2.0
@@ -373,12 +372,11 @@ protocol FontManagerViewControllerDelegate {
 //   MARK: UIColor Extension
 // ******************************************************************
 
-
+// Color functions to gain access to float numbers for Red, Green, Blue and Alpha.
 extension UIColor {
-  // Color functions to gain access to float numbers for Red, Green, Blue and Alpha.
   
+  // Create array that contains RGB components of a UIColor.
   func getRGBComponents() -> [CGFloat] {
-    // Create array that contains RGB components of a UIColor.
     
     var colorDescription = self.description
     colorDescription = colorDescription.stringByReplacingOccurrencesOfString("UIDeviceRGBColorSpace ", withString: "")
