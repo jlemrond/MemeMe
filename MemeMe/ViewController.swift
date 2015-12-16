@@ -13,12 +13,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
 
   
   // TODO: List
-  // Add Crop
-  // Change color slider thumb
-  // Remove or use "Image View"
-  // Edit Color Scheme
-  // Check functionality while other views are visable and device is rotated
-  // Optional Binding in FontManager
+  // Test on Phone
   
   
   // ******************************************************************
@@ -44,6 +39,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   var pickedImageSize = CGSize()
 
   @IBOutlet weak var navigationBar: UINavigationBar!
+  @IBOutlet weak var navigationBarTopConstraint: NSLayoutConstraint!
   @IBOutlet weak var toolbar: UIToolbar!
   @IBOutlet weak var pickedImage: UIImageView!
   @IBOutlet weak var topTextField: UITextField!
@@ -51,9 +47,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   @IBOutlet weak var textStack: UIStackView!
   @IBOutlet weak var textStackTopConst: NSLayoutConstraint!
   @IBOutlet weak var textStackBottomConst: NSLayoutConstraint!
-  @IBOutlet weak var imageView: UIView!
-  @IBOutlet weak var imageViewTopConst: NSLayoutConstraint!
-  @IBOutlet weak var imageViewBotConst: NSLayoutConstraint!
   @IBOutlet weak var parentView: UIView!
   @IBOutlet weak var parentViewTopConst: NSLayoutConstraint!
   @IBOutlet weak var parentViewBotConst: NSLayoutConstraint!
@@ -89,17 +82,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
       imageViewScale = scaleFactor(viewSize)
     }
     
-    view.backgroundColor = ProjectColors.getNavyColor()
-    parentView.backgroundColor = ProjectColors.getBlueColor()
+    view.backgroundColor       = ProjectColors.background
+    parentView.backgroundColor = ProjectColors.backgroundAlt
     
     setUpNavigationBar()
     setUpToolbar()
     setUpTextFields()
     
     imagePickerController.delegate = self
-    
-    imageView.layer.borderWidth = 3.0
-    imageView.layer.borderColor = UIColor.redColor().CGColor
     
   }
   
@@ -186,6 +176,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   func imagePickerControllerDidCancel(picker: UIImagePickerController) {
     //Dismiss view controller when cancel is selected.
     dismissViewControllerAnimated(true, completion: nil)
+    isImageAvailable()
   }
   
   
@@ -278,16 +269,19 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   }
   
   // Save the current image as a 'Meme' Struct
-  func save() {
-    guard let image = pickedImage.image else { return }
+  func save(topText: String, bottomText: String, image: UIImage, meme: UIImage) {
     
-    let savedImage = Meme(top: topTextField.text!, bottom: bottomTextField.text!, image: image, memedImage: generateMemedImage())
+    let savedImage = Meme(top: topText, bottom: bottomText, image: image, memedImage: meme)
     memes.append(savedImage)
-    print(memes)
+    print("Image Saved")
+    print("Stored Memes: \(memes)")
   }
   
   // Generates image to be saved or shared and opens Activity View Controller
   func share() {
+    
+    guard let image = pickedImage.image
+      else { return }
     
     let group: dispatch_group_t = dispatch_group_create()
     
@@ -304,6 +298,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         self.parentViewBotConst.constant = self.defaultConstraint
         self.textStackTopConst.constant = self.activeConstratint
         self.textStackBottomConst.constant = self.activeConstratint
+        self.save(self.topTextField.text!, bottomText: self.bottomTextField.text!, image: image, meme: self.generateMemedImage())
       })
     }
     
@@ -361,7 +356,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // Configure popover paramaters
     popoverFontController.delegate = self
     popoverFontController.barButtonItem = sender
-    popoverFontController.backgroundColor = ProjectColors.getBlueColor()
+    popoverFontController.backgroundColor = ProjectColors.background
     
     self.presentViewController(fontManagerViewController, animated: true, completion: nil)
   }
@@ -399,18 +394,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   func unsubscriveToKeyboardNotifications() {
     NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
     NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
-    print("Notification unsubscribed")
+    print("Notifications unsubscribed")
   }
   
   func keyboardWillShow(notification: NSNotification) {
     if bottomTextField.isFirstResponder() {
       view.frame.origin.y -= getKeyboardHeight(notification)
+      navigationBarTopConstraint.constant -= getKeyboardHeight(notification)
     }
   }
   
   func keyboardWillHide(notification: NSNotification) {
     if bottomTextField.isFirstResponder() {
       view.frame.origin.y += getKeyboardHeight(notification)
+      navigationBarTopConstraint.constant += getKeyboardHeight(notification)
     }
   }
   
@@ -427,56 +424,48 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   //   MARK: Inital UI Set Up Methods
   // ******************************************************************
   
+  /// Sets up navigation bar along with buttons.
   func setUpNavigationBar() {
-    // Sets up navigation bar along with buttons.
-    navigationBar.barTintColor = ProjectColors.getNavyColor()
+    navigationBar.barTintColor = ProjectColors.background
     navigationBar.translucent = false
     
     let attributes = [NSFontAttributeName : UIFont(name: "FontAwesome", size: 18)!]
 
     fontButton = UIBarButtonItem(title: "Aa", style: .Plain, target: self, action: "fontManagerSelected:")
-    fontButton.setTitleTextAttributes(attributes, forState: .Normal)
-    fontButton.tintColor = ProjectColors.getYellowColor()
-    
     shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "share")
-    shareButton.enabled = false
-    shareButton.tintColor = ProjectColors.getYellowColor()
-    
     cancelButton = UIBarButtonItem(title: "\u{f00d}", style: .Plain, target: self, action: "cancelImage")
-    cancelButton.setTitleTextAttributes(attributes, forState: .Normal)
-    cancelButton.tintColor = ProjectColors.getYellowColor()
     
-    saveButton = UIBarButtonItem(title: "\u{f0c7}", style: .Plain, target: self, action: "save")
-    saveButton.setTitleTextAttributes(attributes, forState: .Normal)
-    saveButton.tintColor = ProjectColors.getYellowColor()
+    for buttons in [fontButton, shareButton, cancelButton] {
+      buttons.setTitleTextAttributes(attributes, forState: .Normal)
+      buttons.tintColor = ProjectColors.secondAccent
+    }
     
-    //navigationItem.rightBarButtonItem = fontButton
-    navigationItem.rightBarButtonItems = [saveButton, shareButton, fontButton]
+    navigationItem.rightBarButtonItems = [shareButton, fontButton]
     navigationItem.leftBarButtonItem =  cancelButton
-    
     navigationBar.items = [navigationItem]
     
-    self.view.addSubview(navigationBar)
+    view.addSubview(navigationBar)
   }
   
-  // Sets up toolbar along with buttons.
+  /// Sets up toolbar along with buttons.
   func setUpToolbar() {
-    toolbar.barTintColor = ProjectColors.getNavyColor()
+    toolbar.barTintColor = ProjectColors.background
     toolbar.translucent = false
     
-    albumButton = UIButton(frame: CGRect(x: 0, y: 0, width: 140, height: 30))
     albumButton.addTarget(self, action: "selectImageFromAlbum", forControlEvents: .TouchUpInside)
     albumButton.setTitle("\u{f03e}", forState: .Normal)
-    albumButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 20)
-    albumButton.backgroundColor = ProjectColors.getOrangeColor()
-    albumButton.setTitleColor(ProjectColors.getNavyColor(), forState: .Normal)
+    albumButton.backgroundColor = ProjectColors.secondAccent
     
-    cameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: 140, height: 30))
     cameraButton.addTarget(self, action: "captureImageFromCamera", forControlEvents: .TouchUpInside)
     cameraButton.setTitle("\u{f083}", forState: .Normal)
-    cameraButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 20)
-    cameraButton.backgroundColor = ProjectColors.getYellowColor()
-    cameraButton.setTitleColor(ProjectColors.getNavyColor(), forState: .Normal)
+    cameraButton.backgroundColor = ProjectColors.firstAccent
+    
+    for buttons in [albumButton, cameraButton] {
+      buttons.frame = CGRect(x: 0, y: 0, width: 140, height: 30)
+      buttons.setTitleColor(ProjectColors.background, forState: .Normal)
+      buttons.titleLabel?.font = UIFont(name: "FontAwesome", size: 20)
+      buttons.layer.cornerRadius = 3.0
+    }
     
     let leftToolbarButton = UIBarButtonItem()
     leftToolbarButton.customView = albumButton
@@ -487,11 +476,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     toolbar.items = [flexSpace, leftToolbarButton, flexSpace, rightToolbarButton, flexSpace]
     
-    self.view.addSubview(toolbar)
+    view.addSubview(toolbar)
   }
   
+  /// Set up attributes for top and bottom text fields.
   func setUpTextFields() {
-    // Set up attributes for top and bottom text fields.
     textFieldArray = [topTextField, bottomTextField]
     
     topTextField.text = "TOP"
