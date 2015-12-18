@@ -369,10 +369,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     popoverFontController.backgroundColor = ProjectColors.background
     
     self.presentViewController(fontManagerViewController, animated: true, completion: nil)
+    print("HERE")
   }
   
-  
-  func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+  func adaptivePresentationStyleForPresentationController(controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
     return .None
   }
   
