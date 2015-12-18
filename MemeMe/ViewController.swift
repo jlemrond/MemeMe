@@ -10,10 +10,6 @@ import UIKit
 import Foundation
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, FontManagerViewControllerDelegate {
-
-  
-  // TODO: List
-  // Test on Phone
   
   
   // ******************************************************************
@@ -21,22 +17,22 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   // ******************************************************************
   
   var cameraButton = UIButton()
-  var albumButton = UIButton()
-  var shareButton = UIBarButtonItem()
-  var fontButton = UIBarButtonItem()
+  var albumButton  = UIButton()
+  var shareButton  = UIBarButtonItem()
+  var fontButton   = UIBarButtonItem()
   var cancelButton = UIBarButtonItem()
-  var saveButton = UIBarButtonItem()
+  var saveButton   = UIBarButtonItem()
 
   var navBarTopConstraint = NSLayoutConstraint()
-  var imageViewScale: CGFloat?
-  var imageScale = CGFloat()
-  var defaultConstraint: CGFloat = 0
-  var activeConstratint: CGFloat = 0
-  var currentDeviceHeight: CGFloat!
+  var imageViewScale:       CGFloat?
+  var imageScale          = CGFloat()
+  var defaultConstraint:    CGFloat = 0
+  var activeConstratint:    CGFloat = 0
+  var currentDeviceHeight:  CGFloat!
   
-  var shareImage = UIImage()
+  var shareImage        = UIImage()
   var pickedImageOrigin = CGPoint()
-  var pickedImageSize = CGSize()
+  var pickedImageSize   = CGSize()
 
   @IBOutlet weak var navigationBar: UINavigationBar!
   @IBOutlet weak var navigationBarTopConstraint: NSLayoutConstraint!
@@ -56,10 +52,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   // Default text attributes for top and bottom text fields.
   var memeTextAttributes = [
-    NSStrokeColorAttributeName : UIColor.blackColor(),
+    NSStrokeColorAttributeName     : UIColor.blackColor(),
     NSForegroundColorAttributeName : UIColor.whiteColor(),
-    NSFontAttributeName : UIFont(name: "Impact", size: 40)!,
-    NSStrokeWidthAttributeName : "-4.0",
+    NSFontAttributeName            : UIFont(name: "Impact", size: 40)!,
+    NSStrokeWidthAttributeName     : "-4.0",
   ]
   var textFieldArray: [UITextField] = []
   
@@ -98,10 +94,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     // If a camera is not available, make camera button unuseable
     cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+    
     subscribeToKeyboardNotifications()
     
-    parentViewTopConst.constant = defaultConstraint
-    parentViewBotConst.constant = defaultConstraint
+    resetParentViewConstraints()
     
   }
   
@@ -162,7 +158,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     // Make the visable image view the image selected by the user.
-    pickedImage.image = selectedImage
+    pickedImage.image       = selectedImage
     pickedImage.contentMode = .ScaleAspectFit
     
     isImageAvailable()
@@ -198,15 +194,32 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
       activeConstratint = defaultConstraint
     }
     
-    textStackTopConst.constant = activeConstratint
-    textStackBottomConst.constant = activeConstratint
+    activateTextStackConstraints()
 
+  }
+  
+  func activateTextStackConstraints() {
+    print("Reset Text Constraints Called")
+    textStackTopConst.constant    = activeConstratint
+    textStackBottomConst.constant = activeConstratint
   }
   
   func resetTextStackConstraints() {
     print("Reset Text Constraints Called")
-    textStackTopConst.constant = defaultConstraint
+    textStackTopConst.constant    = defaultConstraint
     textStackBottomConst.constant = defaultConstraint
+  }
+  
+  func activateParentViewConstraints() {
+    print("Reset Parent View Constraints Called")
+    parentViewTopConst.constant = activeConstratint
+    parentViewBotConst.constant = activeConstratint
+  }
+  
+  func resetParentViewConstraints() {
+    print("Reset Parent View Constraints Called")
+    parentViewTopConst.constant = defaultConstraint
+    parentViewBotConst.constant = defaultConstraint
   }
   
   func resizeIfPortait(image: UIImage) {
@@ -220,12 +233,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   }
   
-  // If image does not neeed to be scaled down, the absolute height of
-  // the image will be returned, else the scaled down size of the image
-  // is returned.
+  /// If image does not neeed to be scaled down, the absolute height of
+  /// the image will be returned, else the scaled down size of the image
+  /// is returned.
   func checkImageSize(image: UIImage, scale: CGFloat) -> CGFloat {
     
-    if image.size.width < parentView.frame.size.width  &&
+    if image.size.width  < parentView.frame.size.width  &&
        image.size.height < parentView.frame.size.height {
         print("Image Size Used")
         return image.size.height
@@ -247,7 +260,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
   }
   
-  // Returns the scale for the given object.
+  /// Returns the scale for the given object.
   func scaleFactor(object: CGSize) -> CGFloat {
     let height = object.height
     let width  = object.width
@@ -258,7 +271,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   // Save Image Methods
   
-  // Create image from the parent view
+  // Create image from the parentView
   func generateMemedImage() -> UIImage {
     UIGraphicsBeginImageContext(parentView.frame.size)
     parentView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
@@ -268,7 +281,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     return memedImage
   }
   
-  // Save the current image as a 'Meme' Struct
+  /// Save the current image as a 'Meme' Struct
   func save(topText: String, bottomText: String, image: UIImage, meme: UIImage) {
     
     let savedImage = Meme(top: topText, bottom: bottomText, image: image, memedImage: meme)
@@ -277,7 +290,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     print("Stored Memes: \(memes)")
   }
   
-  // Generates image to be saved or shared and opens Activity View Controller
+  /// Generates image to be saved or shared and opens Activity View Controller
   func share() {
     
     guard let image = pickedImage.image
@@ -294,10 +307,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
       self.shareImage = self.generateMemedImage()
       let activityViewController = UIActivityViewController(activityItems: [self.shareImage], applicationActivities: nil)
       self.presentViewController(activityViewController, animated: true, completion: { () -> Void in
-        self.parentViewTopConst.constant = self.defaultConstraint
-        self.parentViewBotConst.constant = self.defaultConstraint
-        self.textStackTopConst.constant = self.activeConstratint
-        self.textStackBottomConst.constant = self.activeConstratint
+        self.resetParentViewConstraints()
+        self.activateTextStackConstraints()
         self.save(self.topTextField.text!, bottomText: self.bottomTextField.text!, image: image, meme: self.generateMemedImage())
       })
     }
@@ -308,8 +319,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     print("Resize Image View")
     resetTextStackConstraints()
     if UIDevice.currentDevice().orientation == UIDeviceOrientation.Portrait {
-      parentViewTopConst.constant = activeConstratint
-      parentViewBotConst.constant = activeConstratint
+      activateParentViewConstraints()
     }
   }
   
@@ -354,8 +364,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     // Configure popover paramaters
-    popoverFontController.delegate = self
-    popoverFontController.barButtonItem = sender
+    popoverFontController.delegate        = self
+    popoverFontController.barButtonItem   = sender
     popoverFontController.backgroundColor = ProjectColors.background
     
     self.presentViewController(fontManagerViewController, animated: true, completion: nil)
@@ -399,20 +409,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   func keyboardWillShow(notification: NSNotification) {
     if bottomTextField.isFirstResponder() {
-      view.frame.origin.y -= getKeyboardHeight(notification)
+      view.frame.origin.y                 -= getKeyboardHeight(notification)
       navigationBarTopConstraint.constant -= getKeyboardHeight(notification)
     }
   }
   
   func keyboardWillHide(notification: NSNotification) {
     if bottomTextField.isFirstResponder() {
-      view.frame.origin.y += getKeyboardHeight(notification)
+      view.frame.origin.y                 += getKeyboardHeight(notification)
       navigationBarTopConstraint.constant += getKeyboardHeight(notification)
     }
   }
   
   func getKeyboardHeight(notification: NSNotification) -> CGFloat {
-    let userInfo = notification.userInfo
+    let userInfo     = notification.userInfo
     let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
     return keyboardSize.CGRectValue().height
   }
@@ -427,13 +437,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   /// Sets up navigation bar along with buttons.
   func setUpNavigationBar() {
     navigationBar.barTintColor = ProjectColors.background
-    navigationBar.translucent = false
+    navigationBar.translucent  = false
+    
+    navigationBar.layer.shadowColor   = UIColor.blackColor().CGColor
+    navigationBar.layer.shadowOffset  = CGSize(width: 0.0, height: 2.0)
+    navigationBar.layer.shadowOpacity = 0.25
+    navigationBar.layer.shadowRadius  = 2.0
     
     let attributes = [NSFontAttributeName : UIFont(name: "FontAwesome", size: 18)!]
 
-    fontButton = UIBarButtonItem(title: "Aa", style: .Plain, target: self, action: "fontManagerSelected:")
-    shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "share")
+    fontButton   = UIBarButtonItem(title: "Aa",       style: .Plain, target: self, action: "fontManagerSelected:")
     cancelButton = UIBarButtonItem(title: "\u{f00d}", style: .Plain, target: self, action: "cancelImage")
+    shareButton  = UIBarButtonItem(barButtonSystemItem: .Action,     target: self, action: "share")
     
     for buttons in [fontButton, shareButton, cancelButton] {
       buttons.setTitleTextAttributes(attributes, forState: .Normal)
@@ -441,7 +456,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     navigationItem.rightBarButtonItems = [shareButton, fontButton]
-    navigationItem.leftBarButtonItem =  cancelButton
+    navigationItem.leftBarButtonItem   =  cancelButton
     navigationBar.items = [navigationItem]
     
     view.addSubview(navigationBar)
@@ -450,7 +465,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   /// Sets up toolbar along with buttons.
   func setUpToolbar() {
     toolbar.barTintColor = ProjectColors.background
-    toolbar.translucent = false
+    toolbar.translucent  = false
+    
+    toolbar.layer.shadowColor   = UIColor.blackColor().CGColor
+    toolbar.layer.shadowOffset  = CGSize(width: 0.0, height: 0.0)
+    toolbar.layer.shadowOpacity = 0.4
+    toolbar.layer.shadowRadius  = 5.0
     
     albumButton.addTarget(self, action: "selectImageFromAlbum", forControlEvents: .TouchUpInside)
     albumButton.setTitle("\u{f03e}", forState: .Normal)
@@ -458,7 +478,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     cameraButton.addTarget(self, action: "captureImageFromCamera", forControlEvents: .TouchUpInside)
     cameraButton.setTitle("\u{f083}", forState: .Normal)
-    cameraButton.backgroundColor = ProjectColors.firstAccent
+    cameraButton.backgroundColor = ProjectColors.secondAccent
     
     for buttons in [albumButton, cameraButton] {
       buttons.frame = CGRect(x: 0, y: 0, width: 140, height: 30)
@@ -483,14 +503,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   func setUpTextFields() {
     textFieldArray = [topTextField, bottomTextField]
     
-    topTextField.text = "TOP"
+    topTextField.text    = "TOP"
     bottomTextField.text = "BOTTOM"
     
     for index in textFieldArray {
-      index.delegate = textDelegate
+      index.delegate              = textDelegate
       index.defaultTextAttributes = memeTextAttributes
-      index.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-      index.textAlignment = NSTextAlignment.Center
+      index.textColor             = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      index.textAlignment         = NSTextAlignment.Center
     }
   }
   

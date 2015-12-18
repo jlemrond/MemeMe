@@ -65,13 +65,13 @@ struct FontModel {
 
 struct ProjectColors {
   
-  static var red = UIColor(red: 255/255, green: 124/255, blue: 108/255, alpha: 1.0)
-  static var blue = UIColor(red: 25/255, green: 181/255, blue: 254/255, alpha: 1.0)
-  static var green = UIColor(red: 62/255, green: 220/255, blue: 129/255, alpha: 1.0)
-  static var firstAccent = UIColor(red: 22/255, green: 160/255, blue: 133/255, alpha: 1.0)
-  static var secondAccent = UIColor(red: 26/255, green: 188/255, blue: 156/255, alpha: 1.0)
-  static var background = UIColor(red: 2/255, green: 34/255, blue: 43/255, alpha: 1.0)
-  static var backgroundAlt = UIColor(red: 5/255, green: 53/255, blue: 66/255, alpha: 1.0)
+  static var red   = UIColor(red: 255/255, green: 124/255, blue: 108/255, alpha: 1.0)
+  static var blue  = UIColor(red: 25/255,  green: 181/255, blue: 254/255, alpha: 1.0)
+  static var green = UIColor(red: 62/255,  green: 220/255, blue: 129/255, alpha: 1.0)
+  
+  static var secondAccent  = UIColor(red: 55/255,  green: 219/255, blue: 208/255, alpha: 1.0)
+  static var background    = UIColor(red: 41/255,  green: 41/255,  blue: 41/255,  alpha: 1.0)
+  static var backgroundAlt = UIColor(red: 53/255,  green: 53/255,  blue: 53/255,  alpha: 1.0)
 
 }
 
