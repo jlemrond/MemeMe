@@ -104,7 +104,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   // Reset frame when device is rotated
   override func viewDidLayoutSubviews() {
     if view.frame.height != currentDeviceHeight {
-      print("rotation called")
+      print("Device rotated")
       isImageAvailable()
       currentDeviceHeight = view.frame.height
     }
@@ -369,7 +369,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     popoverFontController.backgroundColor = ProjectColors.background
     
     self.presentViewController(fontManagerViewController, animated: true, completion: nil)
-    print("HERE")
   }
   
   func adaptivePresentationStyleForPresentationController(controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
