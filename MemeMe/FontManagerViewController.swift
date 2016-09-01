@@ -292,7 +292,7 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
       button.setTitle(font.name, forState: .Normal)
       button.setTitleColor(ProjectColors.background, forState: .Normal)
       button.titleLabel?.font = UIFont(name: font.fontFamily, size: 12)
-      button.addTarget(self, action: "selectedFont:", forControlEvents: .TouchUpInside)
+      button.addTarget(self, action: #selector(FontManagerViewController.selectedFont(_:)), forControlEvents: .TouchUpInside)
       containerView.addSubview(button)
       
       button.frame = CGRect(x: CGRectGetMinX(containerView.frame),
@@ -363,7 +363,7 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
       let sliderSize = CGSize(width: colorSlider.trackWidth, height: 16)
       
       colorSlider.frame = CGRect(origin: sliderOrigin!, size: sliderSize)
-      colorSlider.addTarget(self, action: "changeButtonColor", forControlEvents: .ValueChanged)
+      colorSlider.addTarget(self, action: #selector(FontManagerViewController.changeButtonColor), forControlEvents: .ValueChanged)
       colorView.addSubview(colorSlider)
     }
   }
@@ -379,7 +379,7 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
 
 protocol FontManagerViewControllerDelegate {
   
-  func changeFontAttributes (var fontAttributes: [String: NSObject])
+  func changeFontAttributes (fontAttributes: [String: NSObject])
   
 }
 

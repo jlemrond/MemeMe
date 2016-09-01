@@ -58,8 +58,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     NSStrokeWidthAttributeName     : "-4.0",
   ]
   var textFieldArray: [UITextField] = []
-  
-  var memes: [Meme] = []
+
+  var selectedMeme = Meme?()
   
   
   
@@ -86,6 +86,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     setUpTextFields()
     
     imagePickerController.delegate = self
+
+    if (selectedMeme != nil) {
+      print("A Meme is selected")
+    }
     
   }
   
@@ -285,9 +289,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   func save(topText: String, bottomText: String, image: UIImage, meme: UIImage) {
     
     let savedImage = Meme(top: topText, bottom: bottomText, image: image, memedImage: meme)
-    memes.append(savedImage)
+    
+    let object = UIApplication.sharedApplication().delegate
+    let appDelegate = object as! AppDelegate
+    appDelegate.memes.append(savedImage)
     print("Image Saved")
-    print("Stored Memes: \(memes)")
+    print(appDelegate.memes)
   }
   
   /// Generates image to be saved or shared and opens Activity View Controller
@@ -395,8 +402,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   // ******************************************************************
   
   func subscribeToKeyboardNotifications() {
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     print("Notications subscribed")
   }
   
@@ -445,9 +452,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     let attributes = [NSFontAttributeName : UIFont(name: "FontAwesome", size: 18)!]
 
-    fontButton   = UIBarButtonItem(title: "Aa",       style: .Plain, target: self, action: "fontManagerSelected:")
-    cancelButton = UIBarButtonItem(title: "\u{f00d}", style: .Plain, target: self, action: "cancelImage")
-    shareButton  = UIBarButtonItem(barButtonSystemItem: .Action,     target: self, action: "share")
+    fontButton   = UIBarButtonItem(title: "Aa",       style: .Plain, target: self, action: #selector(ViewController.fontManagerSelected(_:)))
+    cancelButton = UIBarButtonItem(title: "\u{f00d}", style: .Plain, target: self, action: #selector(ViewController.cancelImage))
+    shareButton  = UIBarButtonItem(barButtonSystemItem: .Action,     target: self, action: #selector(ViewController.share))
     
     for buttons in [fontButton, shareButton, cancelButton] {
       buttons.setTitleTextAttributes(attributes, forState: .Normal)
@@ -471,11 +478,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     toolbar.layer.shadowOpacity = 0.4
     toolbar.layer.shadowRadius  = 5.0
     
-    albumButton.addTarget(self, action: "selectImageFromAlbum", forControlEvents: .TouchUpInside)
+    albumButton.addTarget(self, action: #selector(ViewController.selectImageFromAlbum), forControlEvents: .TouchUpInside)
     albumButton.setTitle("\u{f03e}", forState: .Normal)
     albumButton.backgroundColor = ProjectColors.secondAccent
     
-    cameraButton.addTarget(self, action: "captureImageFromCamera", forControlEvents: .TouchUpInside)
+    cameraButton.addTarget(self, action: #selector(ViewController.captureImageFromCamera), forControlEvents: .TouchUpInside)
     cameraButton.setTitle("\u{f083}", forState: .Normal)
     cameraButton.backgroundColor = ProjectColors.secondAccent
     

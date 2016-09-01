@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		840E59FF1C16925900C74EF9 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840E59FE1C16925900C74EF9 /* Model.swift */; settings = {ASSET_TAGS = (); }; };
+		840E59FF1C16925900C74EF9 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840E59FE1C16925900C74EF9 /* Model.swift */; };
 		84105E6D1C0E6D71007AB5E9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84105E6C1C0E6D71007AB5E9 /* AppDelegate.swift */; };
 		84105E6F1C0E6D71007AB5E9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84105E6E1C0E6D71007AB5E9 /* ViewController.swift */; };
 		84105E721C0E6D71007AB5E9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84105E701C0E6D71007AB5E9 /* Main.storyboard */; };
@@ -15,10 +15,11 @@
 		84105E771C0E6D71007AB5E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84105E751C0E6D71007AB5E9 /* LaunchScreen.storyboard */; };
 		84105E821C0E6D71007AB5E9 /* MemeMeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84105E811C0E6D71007AB5E9 /* MemeMeTests.swift */; };
 		84105E8D1C0E6D71007AB5E9 /* MemeMeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84105E8C1C0E6D71007AB5E9 /* MemeMeUITests.swift */; };
-		8469B10D1C1B641400D00D1F /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8469B10C1C1B641400D00D1F /* FontAwesome.otf */; settings = {ASSET_TAGS = (); }; };
-		8469B10F1C1B684300D00D1F /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8469B10E1C1B684300D00D1F /* Impact.ttf */; settings = {ASSET_TAGS = (); }; };
-		849DB09A1C127E9D0016A730 /* textFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849DB0991C127E9D0016A730 /* textFieldDelegate.swift */; settings = {ASSET_TAGS = (); }; };
-		849DB0D81C12B86F0016A730 /* FontManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849DB0D71C12B86F0016A730 /* FontManagerViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		8469B10D1C1B641400D00D1F /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8469B10C1C1B641400D00D1F /* FontAwesome.otf */; };
+		8469B10F1C1B684300D00D1F /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8469B10E1C1B684300D00D1F /* Impact.ttf */; };
+		849DB09A1C127E9D0016A730 /* textFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849DB0991C127E9D0016A730 /* textFieldDelegate.swift */; };
+		849DB0D81C12B86F0016A730 /* FontManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849DB0D71C12B86F0016A730 /* FontManagerViewController.swift */; };
+		EAE88B6C1D7670D200809132 /* SavedMemesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE88B6B1D7670D200809132 /* SavedMemesCollectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		8469B10E1C1B684300D00D1F /* Impact.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Impact.ttf; sourceTree = "<group>"; };
 		849DB0991C127E9D0016A730 /* textFieldDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = textFieldDelegate.swift; sourceTree = "<group>"; };
 		849DB0D71C12B86F0016A730 /* FontManagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontManagerViewController.swift; sourceTree = "<group>"; };
+		EAE88B6B1D7670D200809132 /* SavedMemesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedMemesCollectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 			children = (
 				84105E6C1C0E6D71007AB5E9 /* AppDelegate.swift */,
 				84105E6E1C0E6D71007AB5E9 /* ViewController.swift */,
+				EAE88B6B1D7670D200809132 /* SavedMemesCollectionView.swift */,
 				849DB0991C127E9D0016A730 /* textFieldDelegate.swift */,
 				84105E701C0E6D71007AB5E9 /* Main.storyboard */,
 				849DB0D71C12B86F0016A730 /* FontManagerViewController.swift */,
@@ -272,6 +275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAE88B6C1D7670D200809132 /* SavedMemesCollectionView.swift in Sources */,
 				840E59FF1C16925900C74EF9 /* Model.swift in Sources */,
 				84105E6F1C0E6D71007AB5E9 /* ViewController.swift in Sources */,
 				849DB09A1C127E9D0016A730 /* textFieldDelegate.swift in Sources */,
