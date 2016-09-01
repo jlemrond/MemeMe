@@ -314,9 +314,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
       self.shareImage = self.generateMemedImage()
       let activityViewController = UIActivityViewController(activityItems: [self.shareImage], applicationActivities: nil)
       self.presentViewController(activityViewController, animated: true, completion: { () -> Void in
+        self.save(self.topTextField.text!, bottomText: self.bottomTextField.text!, image: image, meme: self.shareImage)
         self.resetParentViewConstraints()
         self.activateTextStackConstraints()
-        self.save(self.topTextField.text!, bottomText: self.bottomTextField.text!, image: image, meme: self.generateMemedImage())
       })
     }
     

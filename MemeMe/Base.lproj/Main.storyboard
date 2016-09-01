@@ -83,8 +83,11 @@
                             <outlet property="delegate" destination="VyJ-bo-MpW" id="6bn-2v-GWC"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="jVH-Mw-Ogp"/>
+                    <navigationItem key="navigationItem" id="jVH-Mw-Ogp">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="cA3-u8-dHl"/>
+                    </navigationItem>
                     <connections>
+                        <outlet property="addMeme" destination="cA3-u8-dHl" id="clA-1l-jff"/>
                         <outlet property="flowLayout" destination="SUw-H1-OPz" id="ld1-Qa-YaC"/>
                     </connections>
                 </collectionViewController>

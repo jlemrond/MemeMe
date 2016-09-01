@@ -17,6 +17,7 @@ class SavedMemesCollectionView: UICollectionViewController {
     return (UIApplication.sharedApplication().delegate as! AppDelegate).memes
   }
   var indexPaths = [NSIndexPath]?()
+  @IBOutlet weak var addMeme: UIBarButtonItem!
 
 
   override func viewWillAppear(animated: Bool) {
@@ -27,7 +28,7 @@ class SavedMemesCollectionView: UICollectionViewController {
 
     flowLayout.minimumLineSpacing = space
     flowLayout.minimumInteritemSpacing = space
-    flowLayout.itemSize = CGSize(width: dimension, height: dimension * 2)
+    flowLayout.itemSize = CGSize(width: dimension, height: dimension)
 
     collectionView?.reloadData()
 
