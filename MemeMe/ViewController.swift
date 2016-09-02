@@ -60,6 +60,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   var textFieldArray: [UITextField] = []
 
   var selectedMeme = Meme?()
+  var collectionViewDelegate = SavedMemesCollectionViewDelegate?()
   
   
   
@@ -313,6 +314,19 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
       // Waits for view to be resized to image size before executing
       self.shareImage = self.generateMemedImage()
       let activityViewController = UIActivityViewController(activityItems: [self.shareImage], applicationActivities: nil)
+
+      activityViewController.completionWithItemsHandler = {(activityType, completed:Bool, returnedItems:[AnyObject]?, error: NSError?) in
+
+        if (!completed) {
+          return
+        }
+
+        self.collectionViewDelegate?.reloadData()
+        self.dismissViewControllerAnimated(true, completion: nil)
+
+      }
+
+
       self.presentViewController(activityViewController, animated: true, completion: { () -> Void in
         self.save(self.topTextField.text!, bottomText: self.bottomTextField.text!, image: image, meme: self.shareImage)
         self.resetParentViewConstraints()
@@ -336,6 +350,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   func cancelImage() {
     pickedImage.image = nil
     isImageAvailable()
+
+    dismissViewControllerAnimated(true, completion: nil)
   }
   
   

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class SavedMemesCollectionView: UICollectionViewController {
+class SavedMemesCollectionView: UICollectionViewController, SavedMemesCollectionViewDelegate {
 
   @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
 
@@ -17,7 +17,8 @@ class SavedMemesCollectionView: UICollectionViewController {
     return (UIApplication.sharedApplication().delegate as! AppDelegate).memes
   }
   var indexPaths = [NSIndexPath]?()
-  @IBOutlet weak var addMeme: UIBarButtonItem!
+
+  
 
 
   override func viewWillAppear(animated: Bool) {
@@ -75,11 +76,54 @@ class SavedMemesCollectionView: UICollectionViewController {
     
   }
 
+
+
+
+  // **************************************************
+  //   MARK: Buttons
+  // **************************************************
+
+
+  @IBAction func addMeme(sender: UIBarButtonItem) {
+
+    let memeViewController = storyboard?.instantiateViewControllerWithIdentifier("memeViewController") as! ViewController
+
+    memeViewController.collectionViewDelegate = self
+    memeViewController.modalPresentationStyle = .OverFullScreen
+    presentViewController(memeViewController, animated: true, completion: nil)
+
+  }
+
 }
+
+
+// **************************************************
+//   MARK: Saved Memes Collection Cell
+// **************************************************
+
 
 class SavedMemesCollectionCell: UICollectionViewCell {
 
   @IBOutlet weak var cellImage: UIImageView!
+
+}
+
+
+
+// **************************************************
+//   MARK: Saved Memes Collection View Delegate
+// **************************************************
+
+
+protocol SavedMemesCollectionViewDelegate {
+  func reloadData()
+}
+
+extension SavedMemesCollectionViewDelegate where Self: UICollectionViewController {
+
+  func reloadData() {
+    collectionView?.reloadData()
+  }
 
 }
 
