@@ -33,7 +33,7 @@ class SavedMemesTableView: UITableViewController, SavedMemesTableViewDelegate {
     if memes.count > 0 {
       return memes.count
     } else {
-      return 20
+      return 0
     }
 
   }
@@ -45,7 +45,7 @@ class SavedMemesTableView: UITableViewController, SavedMemesTableViewDelegate {
 
     if memes.count > 0 {
       cell.imageView?.image = memes[indexPath.item].memedImage
-      cell.textLabel?.text = "\(memes[indexPath.item].topText)"
+      cell.textLabel?.text = "\(memes[indexPath.item].topText) \(memes[indexPath.item].bottomText))"
     } else {
       cell.textLabel?.text = ""
     }
@@ -56,15 +56,13 @@ class SavedMemesTableView: UITableViewController, SavedMemesTableViewDelegate {
 
   /// Open Meme Editor on selection.
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    let memeViewController = storyboard?.instantiateViewControllerWithIdentifier("memeViewController") as! ViewController
+    let memeViewController = storyboard?.instantiateViewControllerWithIdentifier("DisplayMemeViewController") as! DisplayMemeViewController
 
     if memes.count > 0 {
       memeViewController.selectedMeme = memes[indexPath.item]
+      navigationController?.pushViewController(memeViewController, animated: true)
+      print("Item Selected from Table")
     }
-
-    memeViewController.tableViewDelegate = self
-    navigationController?.pushViewController(memeViewController, animated: true)
-    print("Item Selected from Table")
 
   }
 
@@ -76,7 +74,7 @@ class SavedMemesTableView: UITableViewController, SavedMemesTableViewDelegate {
   /// Open Meme Editor
   @IBAction func addMeme(sender: UIBarButtonItem) {
 
-    let memeViewController = storyboard?.instantiateViewControllerWithIdentifier("memeViewController") as! ViewController
+    let memeViewController = storyboard?.instantiateViewControllerWithIdentifier("memeViewController") as! MemeEditorViewController
 
     memeViewController.tableViewDelegate = self
     memeViewController.modalPresentationStyle = .OverFullScreen

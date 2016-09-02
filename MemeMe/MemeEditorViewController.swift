@@ -325,7 +325,6 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
         self.collectionViewDelegate?.reloadData()
         self.tableViewDelegate?.reloadData()
         self.dismissViewControllerAnimated(true, completion: nil)
-        self.navigationController?.popViewControllerAnimated(true)
 
       }
 
@@ -355,7 +354,6 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     isImageAvailable()
 
     dismissViewControllerAnimated(true, completion: nil)
-    navigationController?.popViewControllerAnimated(true)
   }
   
   

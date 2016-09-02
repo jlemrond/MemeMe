@@ -20,6 +20,7 @@
 		849DB09A1C127E9D0016A730 /* textFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849DB0991C127E9D0016A730 /* textFieldDelegate.swift */; };
 		849DB0D81C12B86F0016A730 /* FontManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849DB0D71C12B86F0016A730 /* FontManagerViewController.swift */; };
 		EAE402891D791993009251B2 /* SavedMemesTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE402881D791993009251B2 /* SavedMemesTableView.swift */; };
+		EAE4028B1D79909D009251B2 /* DisplayMemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE4028A1D79909D009251B2 /* DisplayMemeViewController.swift */; };
 		EAE88B6C1D7670D200809132 /* SavedMemesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE88B6B1D7670D200809132 /* SavedMemesCollectionView.swift */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,7 @@
 		849DB0991C127E9D0016A730 /* textFieldDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = textFieldDelegate.swift; sourceTree = "<group>"; };
 		849DB0D71C12B86F0016A730 /* FontManagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontManagerViewController.swift; sourceTree = "<group>"; };
 		EAE402881D791993009251B2 /* SavedMemesTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedMemesTableView.swift; sourceTree = "<group>"; };
+		EAE4028A1D79909D009251B2 /* DisplayMemeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayMemeViewController.swift; sourceTree = "<group>"; };
 		EAE88B6B1D7670D200809132 /* SavedMemesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedMemesCollectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,12 +114,13 @@
 			isa = PBXGroup;
 			children = (
 				84105E6C1C0E6D71007AB5E9 /* AppDelegate.swift */,
+				84105E701C0E6D71007AB5E9 /* Main.storyboard */,
 				84105E6E1C0E6D71007AB5E9 /* MemeEditorViewController.swift */,
 				EAE88B6B1D7670D200809132 /* SavedMemesCollectionView.swift */,
-				849DB0991C127E9D0016A730 /* textFieldDelegate.swift */,
-				84105E701C0E6D71007AB5E9 /* Main.storyboard */,
 				EAE402881D791993009251B2 /* SavedMemesTableView.swift */,
+				EAE4028A1D79909D009251B2 /* DisplayMemeViewController.swift */,
 				849DB0D71C12B86F0016A730 /* FontManagerViewController.swift */,
+				849DB0991C127E9D0016A730 /* textFieldDelegate.swift */,
 				840E59FE1C16925900C74EF9 /* Model.swift */,
 				84105E731C0E6D71007AB5E9 /* Assets.xcassets */,
 				84105E751C0E6D71007AB5E9 /* LaunchScreen.storyboard */,
@@ -281,6 +284,7 @@
 				EAE88B6C1D7670D200809132 /* SavedMemesCollectionView.swift in Sources */,
 				840E59FF1C16925900C74EF9 /* Model.swift in Sources */,
 				EAE402891D791993009251B2 /* SavedMemesTableView.swift in Sources */,
+				EAE4028B1D79909D009251B2 /* DisplayMemeViewController.swift in Sources */,
 				84105E6F1C0E6D71007AB5E9 /* MemeEditorViewController.swift in Sources */,
 				849DB09A1C127E9D0016A730 /* textFieldDelegate.swift in Sources */,
 				84105E6D1C0E6D71007AB5E9 /* AppDelegate.swift in Sources */,

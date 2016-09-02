@@ -55,18 +55,16 @@ class SavedMemesCollectionView: UICollectionViewController, SavedMemesCollection
     return cell
   }
 
-  /// Opens Meme Editor
+  /// Opens Display Meme View Controller
   override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
 
-    let memeViewController = storyboard?.instantiateViewControllerWithIdentifier("memeViewController") as! MemeEditorViewController
+    let memeViewController = storyboard?.instantiateViewControllerWithIdentifier("DisplayMemeViewController") as! DisplayMemeViewController
 
     if memes.count > 0 {
       memeViewController.selectedMeme = memes[indexPath.item]
+      navigationController?.pushViewController(memeViewController, animated: true)
+      print("Item Selected from Grid")
     }
-
-    memeViewController.collectionViewDelegate = self
-    navigationController?.pushViewController(memeViewController, animated: true)
-    print("Item Selected from Grid")
     
   }
 

@@ -101,6 +101,38 @@
             </objects>
             <point key="canvasLocation" x="-706" y="-561"/>
         </scene>
+        <!--Display Meme View Controller-->
+        <scene sceneID="aAN-XK-bkb">
+            <objects>
+                <viewController storyboardIdentifier="DisplayMemeViewController" id="9Me-Rc-e9V" customClass="DisplayMemeViewController" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xgU-vh-qeg"/>
+                        <viewControllerLayoutGuide type="bottom" id="GF6-Xp-Cd7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EXb-9m-YIQ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uld-jI-ej6">
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="uld-jI-ej6" secondAttribute="trailing" constant="-20" id="Kdx-nu-UBp"/>
+                            <constraint firstItem="uld-jI-ej6" firstAttribute="top" secondItem="xgU-vh-qeg" secondAttribute="bottom" id="bmI-Tt-SWn"/>
+                            <constraint firstItem="GF6-Xp-Cd7" firstAttribute="top" secondItem="uld-jI-ej6" secondAttribute="bottom" id="cEW-U5-SEK"/>
+                            <constraint firstItem="uld-jI-ej6" firstAttribute="leading" secondItem="EXb-9m-YIQ" secondAttribute="leadingMargin" constant="-20" id="gyf-Ol-UE2"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="displayMemeImageView" destination="uld-jI-ej6" id="kFK-gF-45J"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qeQ-ch-WK2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="89" y="-571"/>
+        </scene>
         <!--Saved Memes Collection View-->
         <scene sceneID="5JF-kU-VuM">
             <objects>
@@ -160,10 +192,10 @@
             </objects>
             <point key="canvasLocation" x="-706" y="285"/>
         </scene>
-        <!--View Controller-->
+        <!--Meme Editor View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="memeViewController" id="BYZ-38-t0r" customClass="ViewController" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="memeViewController" id="BYZ-38-t0r" customClass="MemeEditorViewController" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
