@@ -23,16 +23,12 @@ class SavedMemesCollectionView: UICollectionViewController, SavedMemesCollection
 
     navigationController?.navigationBar.topItem?.title = "Saved Memes"
 
-    // Set up Cell Spacing
-    let space: CGFloat =  3.0
-    let dimension = (view.frame.size.width - (space * 2)) / 3.0
-
-    flowLayout.minimumLineSpacing = space
-    flowLayout.minimumInteritemSpacing = space
-    flowLayout.itemSize = CGSize(width: dimension, height: dimension)
-
     collectionView?.reloadData()
 
+  }
+
+  override func viewDidLayoutSubviews() {
+    setUpGridSpacing()
   }
 
   /// Establish number of cells based on number of Memes stored.
@@ -67,6 +63,17 @@ class SavedMemesCollectionView: UICollectionViewController, SavedMemesCollection
       print("Item Selected from Grid")
     }
     
+  }
+
+  // Set up Cell Spacing based on width of device.
+  func setUpGridSpacing() {
+
+    let space: CGFloat =  3.0
+    let dimension = (view.frame.size.width - (space * 2)) / 3.0
+
+    flowLayout.minimumLineSpacing = space
+    flowLayout.minimumInteritemSpacing = space
+    flowLayout.itemSize = CGSize(width: dimension, height: dimension)
   }
 
 
