@@ -17,13 +17,27 @@ class DisplayMemeViewController : UIViewController {
 
   override func viewDidLoad() {
 
+    // If Meme is not present for some reason, return to previous screen.
     guard let meme = selectedMeme else {
+      navigationController?.popViewControllerAnimated(true)
       return
     }
+
+    let editButton = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: #selector(DisplayMemeViewController.editMeme))
+    navigationItem.rightBarButtonItem = editButton
 
     displayMemeImageView.image = meme.memedImage
     displayMemeImageView.contentMode = .ScaleAspectFit
     
+  }
+
+  func editMeme() {
+
+    let memeEditor = storyboard?.instantiateViewControllerWithIdentifier("memeViewController") as! MemeEditorViewController
+
+    memeEditor.selectedMeme = selectedMeme
+    presentViewController(memeEditor, animated: true, completion: nil)
+
   }
 
   

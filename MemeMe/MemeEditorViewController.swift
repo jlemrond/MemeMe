@@ -91,6 +91,10 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
 
     if (selectedMeme != nil) {
       print("A Meme is selected")
+
+      topTextField.text = selectedMeme?.topText
+      bottomTextField.text = selectedMeme?.bottomText
+      pickedImage.image = selectedMeme?.image
     }
     
   }
