@@ -61,6 +61,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
 
   var selectedMeme = Meme?()
   var collectionViewDelegate = SavedMemesCollectionViewDelegate?()
+  var tableViewDelegate = SavedMemesTableViewDelegate?()
   
   
   
@@ -322,7 +323,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         }
 
         self.collectionViewDelegate?.reloadData()
+        self.tableViewDelegate?.reloadData()
         self.dismissViewControllerAnimated(true, completion: nil)
+        self.navigationController?.popViewControllerAnimated(true)
 
       }
 
@@ -352,6 +355,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     isImageAvailable()
 
     dismissViewControllerAnimated(true, completion: nil)
+    navigationController?.popViewControllerAnimated(true)
   }
   
   

@@ -16,7 +16,6 @@ class SavedMemesCollectionView: UICollectionViewController, SavedMemesCollection
   var memes: [Meme] {
     return (UIApplication.sharedApplication().delegate as! AppDelegate).memes
   }
-  var indexPaths = [NSIndexPath]?()
 
   
 
@@ -52,13 +51,6 @@ class SavedMemesCollectionView: UICollectionViewController, SavedMemesCollection
       cell.cellImage.image = memes[indexPath.item].memedImage
     }
 
-    if indexPaths == nil {
-      indexPaths = [indexPath]
-    } else {
-      indexPaths!.append(indexPath)
-    }
-
-    cell.backgroundColor = UIColor.blackColor()
     return cell
   }
 
@@ -71,8 +63,9 @@ class SavedMemesCollectionView: UICollectionViewController, SavedMemesCollection
       memeViewController.selectedMeme = memes[indexPath.item]
     }
 
+    memeViewController.collectionViewDelegate = self
     navigationController?.pushViewController(memeViewController, animated: true)
-    print("Item Selected")
+    print("Item Selected from Grid")
     
   }
 
