@@ -27,7 +27,7 @@
         <scene sceneID="MFG-uA-wbu">
             <objects>
                 <navigationController title="Grid" id="cyb-kI-BOT" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Grid" id="Bff-aq-pul"/>
+                    <tabBarItem key="tabBarItem" title="Grid" image="GridIcon" id="Bff-aq-pul"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Dia-MO-E5W">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -44,7 +44,7 @@
         <scene sceneID="Z0O-Vb-nQH">
             <objects>
                 <navigationController title="Table" id="pmj-L2-yXN" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Table" id="Q1v-uB-ghI"/>
+                    <tabBarItem key="tabBarItem" title="Table" image="TableIcon" id="Q1v-uB-ghI"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="7Px-BX-POP">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -412,4 +412,8 @@
             <point key="canvasLocation" x="670" y="209"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="GridIcon" width="16" height="16"/>
+        <image name="TableIcon" width="16" height="15"/>
+    </resources>
 </document>

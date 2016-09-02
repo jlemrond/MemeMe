@@ -95,6 +95,7 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
       topTextField.text = selectedMeme?.topText
       bottomTextField.text = selectedMeme?.bottomText
       pickedImage.image = selectedMeme?.image
+      pickedImage.contentMode = .ScaleAspectFit
     }
     
   }
