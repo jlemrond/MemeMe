@@ -26,20 +26,20 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
   @IBOutlet weak var colorConstraint: NSLayoutConstraint!
   
   
-  let textDelegate   = textFieldDelegate()
-  var delegate       = FontManagerViewControllerDelegate?()
+  let textDelegate = textFieldDelegate()
+  var delegate = FontManagerViewControllerDelegate?()
   var fontFamilyName = String()
   var oldFontColor   = UIColor()
   
-  let fonts             = FontModel.all()
-  var fontManagerWidth:   CGFloat!
-  var containerWidth:     CGFloat!
-  let containerView     = UIView()
-  var fontScrollOffset:   CGFloat = 0
-  var contentSize       = CGSize?()
+  let fonts = FontModel.all()
+  var fontManagerWidth: CGFloat!
+  var containerWidth: CGFloat!
+  let containerView = UIView()
+  var fontScrollOffset: CGFloat = 0
+  var contentSize = CGSize?()
   var newFontAttributes = [String: NSObject]?()
-  var fontOrigin        = CGPoint()
-  var colorContainer    = UIView()
+  var fontOrigin = CGPoint()
+  var colorContainer = UIView()
   var colorSliders: [String: RGBSliders] = ["Red": RGBSliders(), "Green": RGBSliders(), "Blue": RGBSliders()]
   
   
@@ -62,18 +62,18 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
     view.layer.shadowOpacity = 0.4
     view.layer.shadowRadius = 5.0
     
-    view.backgroundColor      = ProjectColors.background
+    view.backgroundColor = ProjectColors.background
     colorView.backgroundColor = ProjectColors.background
     
     for label in [fontLabel, colorLabel] {
-      label.font            = UIFont(name: "AppleSDGothicNeo-Medium", size: 10)
+      label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 10)
       label.backgroundColor = ProjectColors.background
-      label.textColor       = ProjectColors.secondAccent
+      label.textColor = ProjectColors.secondAccent
     }
     
-    applyFontChangesButton.backgroundColor    = ProjectColors.secondAccent
+    applyFontChangesButton.backgroundColor = ProjectColors.secondAccent
     applyFontChangesButton.layer.cornerRadius = 3.0
-    applyFontChangesButton.titleLabel?.font   = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
+    applyFontChangesButton.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
     applyFontChangesButton.setTitle("APPLY", forState: .Normal)
     applyFontChangesButton.setTitleColor(ProjectColors.background, forState: .Normal)
   }
@@ -110,10 +110,10 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
       else { return }
     
     newFontAttributes = [
-      NSStrokeColorAttributeName     : UIColor.blackColor(),
+      NSStrokeColorAttributeName : UIColor.blackColor(),
       NSForegroundColorAttributeName : fontColor,
-      NSFontAttributeName            : UIFont(name: fontFamilyName, size: 40)!,
-      NSStrokeWidthAttributeName     : "-4.0",
+      NSFontAttributeName : UIFont(name: fontFamilyName, size: 40)!,
+      NSStrokeWidthAttributeName : "-4.0",
     ]
     
     if let newFontAttributes = newFontAttributes {
@@ -161,14 +161,14 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
   
   func changeButtonColor() {
     
-    guard let redSlider   = colorSliders["Red"],
+    guard let redSlider = colorSliders["Red"],
               greenSlider = colorSliders["Green"],
-              blueSlider  = colorSliders["Blue"]
+              blueSlider = colorSliders["Blue"]
       else { return }
     
-    let red   = CGFloat(redSlider.value   / 255.0)
+    let red = CGFloat(redSlider.value   / 255.0)
     let green = CGFloat(greenSlider.value / 255.0)
-    let blue  = CGFloat(blueSlider.value  / 255.0)
+    let blue = CGFloat(blueSlider.value  / 255.0)
     
     colorButton.backgroundColor = UIColor(red: red, green: green, blue: blue, alpha: 1.0)
     
@@ -276,7 +276,7 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
   func addButtonsToScrollView() {
     
     fontScrollView.contentSize = CGSize(width: fontLabel.frame.size.width,
-                                        height: CGFloat(30 * fonts.count))
+                                       height: CGFloat(30 * fonts.count))
     fontScrollView.layer.cornerRadius = 3.0
     
     containerView.frame = fontScrollView.bounds
@@ -327,8 +327,8 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
   /// Create three sliders to change the RGB paramaters of the font
   func addSlidersToColorView() {
     
-    colorView.clipsToBounds        = true
-    colorButton.backgroundColor    = oldFontColor
+    colorView.clipsToBounds = true
+    colorButton.backgroundColor = oldFontColor
     colorButton.layer.cornerRadius = 3.0
     
     for (color, _) in colorSliders {
@@ -344,19 +344,19 @@ class FontManagerViewController: UIViewController, UITextFieldDelegate, UIPopove
       
       switch color {
         case "Red":
-          sliderOrigin                      = CGPoint(x: 8, y: 20)
+          sliderOrigin = CGPoint(x: 8, y: 20)
           colorSlider.minimumTrackTintColor = ProjectColors.red
-          colorSlider.value                 = Float(currentButtonColor.red) * 255
+          colorSlider.value = Float(currentButtonColor.red) * 255
           colorSlider.setThumbImage(UIImage(named: "RedSlider"), forState: .Normal)
         case "Green":
-          sliderOrigin                      = CGPoint(x: 8, y: 60)
+          sliderOrigin = CGPoint(x: 8, y: 60)
           colorSlider.minimumTrackTintColor = ProjectColors.green
-          colorSlider.value                 = Float(currentButtonColor.green) * 255
+          colorSlider.value = Float(currentButtonColor.green) * 255
           colorSlider.setThumbImage(UIImage(named: "GreenSlider"), forState: .Normal)
         default:
-          sliderOrigin                      = CGPoint(x: 8, y: 100)
+          sliderOrigin = CGPoint(x: 8, y: 100)
           colorSlider.minimumTrackTintColor = ProjectColors.blue
-          colorSlider.value                 = Float(currentButtonColor.blue) * 255
+          colorSlider.value = Float(currentButtonColor.blue) * 255
           colorSlider.setThumbImage(UIImage(named: "BlueSlider"), forState: .Normal)
       }
       colorSlider.trackWidth = colorView.frame.size.width - 16
@@ -415,9 +415,9 @@ extension UIColor {
   }
   
   /// Returns the red component of a UIColor
-  var red:   CGFloat { return self.getRGBComponents()[0] }
+  var red: CGFloat { return self.getRGBComponents()[0] }
   /// Returns the blue component of a UIColor
-  var blue:  CGFloat { return self.getRGBComponents()[1] }
+  var blue: CGFloat { return self.getRGBComponents()[1] }
   /// Returns the green component of a UIColor
   var green: CGFloat { return self.getRGBComponents()[2] }
   /// Returns the alpha component of a UIColor
