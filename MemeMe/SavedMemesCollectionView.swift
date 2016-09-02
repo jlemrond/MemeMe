@@ -21,6 +21,7 @@ class SavedMemesCollectionView: UICollectionViewController, SavedMemesCollection
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(true)
 
+    navigationController?.navigationBar.topItem?.title = "Saved Memes"
 
     // Set up Cell Spacing
     let space: CGFloat =  3.0

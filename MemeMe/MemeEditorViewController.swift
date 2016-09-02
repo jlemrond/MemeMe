@@ -139,7 +139,7 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     
     resetTextStackConstraints()
     imagePickerController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-    self.presentViewController(imagePickerController, animated: true, completion: nil)
+    presentViewController(imagePickerController, animated: true, completion: nil)
   }
   
   func captureImageFromCamera() {
@@ -148,7 +148,7 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     
     resetTextStackConstraints()
     imagePickerController.sourceType = UIImagePickerControllerSourceType.Camera
-    self.presentViewController(imagePickerController, animated: true, completion: nil)
+    presentViewController(imagePickerController, animated: true, completion: nil)
   }
   
   
@@ -288,9 +288,9 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
   }
   
   /// Save the current image as a 'Meme' Struct
-  func save(topText: String, bottomText: String, image: UIImage, meme: UIImage) {
+  func save() {
     
-    let savedImage = Meme(top: topText, bottom: bottomText, image: image, memedImage: meme)
+    let savedImage = Meme(bottomText: bottomTextField.text!, topText: topTextField.text!, image: pickedImage.image!, memedImage: shareImage)
     
     let object = UIApplication.sharedApplication().delegate
     let appDelegate = object as! AppDelegate
@@ -302,8 +302,9 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
   /// Generates image to be saved or shared and opens Activity View Controller
   func share() {
     
-    guard let image = pickedImage.image
-      else { return }
+    if (pickedImage.image == nil) {
+      return
+    }
     
     let group: dispatch_group_t = dispatch_group_create()
     
@@ -322,6 +323,7 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
           return
         }
 
+        self.save()
         self.collectionViewDelegate?.reloadData()
         self.tableViewDelegate?.reloadData()
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -330,7 +332,6 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
 
 
       self.presentViewController(activityViewController, animated: true, completion: { () -> Void in
-        self.save(self.topTextField.text!, bottomText: self.bottomTextField.text!, image: image, meme: self.shareImage)
         self.resetParentViewConstraints()
         self.activateTextStackConstraints()
       })
@@ -383,7 +384,7 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     }
   
     guard let popoverFontController = fontManagerViewController.popoverPresentationController else {
-      self.presentViewController(fontManagerViewController, animated: true, completion: nil)
+      presentViewController(fontManagerViewController, animated: true, completion: nil)
       print("Popover Presentation Controller not available.  Legacy veresion used.")
       return
     }
@@ -393,7 +394,7 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     popoverFontController.barButtonItem = sender
     popoverFontController.backgroundColor = ProjectColors.background
     
-    self.presentViewController(fontManagerViewController, animated: true, completion: nil)
+    presentViewController(fontManagerViewController, animated: true, completion: nil)
   }
   
   func adaptivePresentationStyleForPresentationController(controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {

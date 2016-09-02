@@ -57,10 +57,10 @@
             </objects>
             <point key="canvasLocation" x="-1398" y="-561"/>
         </scene>
-        <!--Saved Memes Table View-->
+        <!--Saved Memes-->
         <scene sceneID="san-ad-qQf">
             <objects>
-                <tableViewController storyboardIdentifier="SavedMemesTableView" id="999-cx-cJ1" customClass="SavedMemesTableView" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="SavedMemesTableView" title="Saved Memes" id="999-cx-cJ1" customClass="SavedMemesTableView" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="sKY-j7-1Zb">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -133,10 +133,10 @@
             </objects>
             <point key="canvasLocation" x="89" y="-571"/>
         </scene>
-        <!--Saved Memes Collection View-->
+        <!--Saved Memes-->
         <scene sceneID="5JF-kU-VuM">
             <objects>
-                <collectionViewController storyboardIdentifier="SavedMemesViewController" id="VyJ-bo-MpW" customClass="SavedMemesCollectionView" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="SavedMemesViewController" title="Saved Memes" id="VyJ-bo-MpW" customClass="SavedMemesCollectionView" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="6FR-wA-Nmt">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -155,7 +155,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k94-KA-QqG">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k94-KA-QqG">
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         </imageView>
                                     </subviews>

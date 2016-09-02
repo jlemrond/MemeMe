@@ -18,6 +18,8 @@ class SavedMemesTableView: UITableViewController, SavedMemesTableViewDelegate {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    navigationController?.navigationBar.topItem?.title = "Saved Memes"
     tableView.rowHeight = 80
   }
 
@@ -45,7 +47,7 @@ class SavedMemesTableView: UITableViewController, SavedMemesTableViewDelegate {
 
     if memes.count > 0 {
       cell.imageView?.image = memes[indexPath.item].memedImage
-      cell.textLabel?.text = "\(memes[indexPath.item].topText) \(memes[indexPath.item].bottomText))"
+      cell.textLabel?.text = "\(memes[indexPath.item].topText) \(memes[indexPath.item].bottomText)"
     } else {
       cell.textLabel?.text = ""
     }
