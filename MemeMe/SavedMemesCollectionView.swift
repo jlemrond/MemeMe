@@ -17,12 +17,12 @@ class SavedMemesCollectionView: UICollectionViewController, SavedMemesCollection
     return (UIApplication.sharedApplication().delegate as! AppDelegate).memes
   }
 
-  
-
 
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(true)
 
+
+    // Set up Cell Spacing
     let space: CGFloat =  3.0
     let dimension = (view.frame.size.width - (space * 2)) / 3.0
 
@@ -34,16 +34,17 @@ class SavedMemesCollectionView: UICollectionViewController, SavedMemesCollection
 
   }
 
-
+  /// Establish number of cells based on number of Memes stored.
   override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     if memes.count > 0 {
       return memes.count
     } else {
-      return 20
+      return 0
     }
   }
 
 
+  /// Display respective meme in each cell.
   override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier("savedMemeCell", forIndexPath: indexPath) as! SavedMemesCollectionCell
 
@@ -54,10 +55,10 @@ class SavedMemesCollectionView: UICollectionViewController, SavedMemesCollection
     return cell
   }
 
-
+  /// Opens Meme Editor
   override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
 
-    let memeViewController = storyboard?.instantiateViewControllerWithIdentifier("memeViewController") as! ViewController
+    let memeViewController = storyboard?.instantiateViewControllerWithIdentifier("memeViewController") as! MemeEditorViewController
 
     if memes.count > 0 {
       memeViewController.selectedMeme = memes[indexPath.item]
@@ -77,9 +78,10 @@ class SavedMemesCollectionView: UICollectionViewController, SavedMemesCollection
   // **************************************************
 
 
+  /// Open Meme Editor
   @IBAction func addMeme(sender: UIBarButtonItem) {
 
-    let memeViewController = storyboard?.instantiateViewControllerWithIdentifier("memeViewController") as! ViewController
+    let memeViewController = storyboard?.instantiateViewControllerWithIdentifier("memeViewController") as! MemeEditorViewController
 
     memeViewController.collectionViewDelegate = self
     memeViewController.modalPresentationStyle = .OverFullScreen
@@ -88,6 +90,7 @@ class SavedMemesCollectionView: UICollectionViewController, SavedMemesCollection
   }
 
 }
+
 
 
 // **************************************************
@@ -106,6 +109,9 @@ class SavedMemesCollectionCell: UICollectionViewCell {
 // **************************************************
 //   MARK: Saved Memes Collection View Delegate
 // **************************************************
+//
+//   Used to inform Collection View that the data used
+//   needs to be reloaded.
 
 
 protocol SavedMemesCollectionViewDelegate {

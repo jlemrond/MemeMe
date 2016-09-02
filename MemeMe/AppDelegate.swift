@@ -12,6 +12,8 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
+
+  // Storage for Memes, to share between TableView and CollectionView.
   var memes = [Meme]()
 
 

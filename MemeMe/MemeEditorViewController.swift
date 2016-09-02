@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, FontManagerViewControllerDelegate {
+class MemeEditorViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, FontManagerViewControllerDelegate {
   
   
   // ******************************************************************
@@ -17,22 +17,22 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   // ******************************************************************
   
   var cameraButton = UIButton()
-  var albumButton  = UIButton()
-  var shareButton  = UIBarButtonItem()
-  var fontButton   = UIBarButtonItem()
+  var albumButton = UIButton()
+  var shareButton = UIBarButtonItem()
+  var fontButton = UIBarButtonItem()
   var cancelButton = UIBarButtonItem()
-  var saveButton   = UIBarButtonItem()
+  var saveButton = UIBarButtonItem()
 
   var navBarTopConstraint = NSLayoutConstraint()
-  var imageViewScale:       CGFloat?
-  var imageScale          = CGFloat()
-  var defaultConstraint:    CGFloat = 0
-  var activeConstratint:    CGFloat = 0
+  var imageViewScale: CGFloat?
+  var imageScale = CGFloat()
+  var defaultConstraint: CGFloat = 0
+  var activeConstratint: CGFloat = 0
   var currentDeviceHeight:  CGFloat!
   
-  var shareImage        = UIImage()
+  var shareImage = UIImage()
   var pickedImageOrigin = CGPoint()
-  var pickedImageSize   = CGSize()
+  var pickedImageSize = CGSize()
 
   @IBOutlet weak var navigationBar: UINavigationBar!
   @IBOutlet weak var navigationBarTopConstraint: NSLayoutConstraint!
@@ -52,10 +52,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   // Default text attributes for top and bottom text fields.
   var memeTextAttributes = [
-    NSStrokeColorAttributeName     : UIColor.blackColor(),
+    NSStrokeColorAttributeName : UIColor.blackColor(),
     NSForegroundColorAttributeName : UIColor.whiteColor(),
-    NSFontAttributeName            : UIFont(name: "Impact", size: 40)!,
-    NSStrokeWidthAttributeName     : "-4.0",
+    NSFontAttributeName : UIFont(name: "Impact", size: 40)!,
+    NSStrokeWidthAttributeName : "-4.0",
   ]
   var textFieldArray: [UITextField] = []
 
@@ -164,7 +164,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     // Make the visable image view the image selected by the user.
-    pickedImage.image       = selectedImage
+    pickedImage.image = selectedImage
     pickedImage.contentMode = .ScaleAspectFit
     
     isImageAvailable()
@@ -206,13 +206,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   func activateTextStackConstraints() {
     print("Reset Text Constraints Called")
-    textStackTopConst.constant    = activeConstratint
+    textStackTopConst.constant = activeConstratint
     textStackBottomConst.constant = activeConstratint
   }
   
   func resetTextStackConstraints() {
     print("Reset Text Constraints Called")
-    textStackTopConst.constant    = defaultConstraint
+    textStackTopConst.constant = defaultConstraint
     textStackBottomConst.constant = defaultConstraint
   }
   
@@ -391,8 +391,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     // Configure popover paramaters
-    popoverFontController.delegate        = self
-    popoverFontController.barButtonItem   = sender
+    popoverFontController.delegate = self
+    popoverFontController.barButtonItem = sender
     popoverFontController.backgroundColor = ProjectColors.background
     
     self.presentViewController(fontManagerViewController, animated: true, completion: nil)
@@ -422,8 +422,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   // ******************************************************************
   
   func subscribeToKeyboardNotifications() {
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MemeEditorViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MemeEditorViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     print("Notications subscribed")
   }
   
@@ -435,20 +435,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   
   func keyboardWillShow(notification: NSNotification) {
     if bottomTextField.isFirstResponder() {
-      view.frame.origin.y                 -= getKeyboardHeight(notification)
+      view.frame.origin.y -= getKeyboardHeight(notification)
       navigationBarTopConstraint.constant -= getKeyboardHeight(notification)
     }
   }
   
   func keyboardWillHide(notification: NSNotification) {
     if bottomTextField.isFirstResponder() {
-      view.frame.origin.y                 += getKeyboardHeight(notification)
+      view.frame.origin.y += getKeyboardHeight(notification)
       navigationBarTopConstraint.constant += getKeyboardHeight(notification)
     }
   }
   
   func getKeyboardHeight(notification: NSNotification) -> CGFloat {
-    let userInfo     = notification.userInfo
+    let userInfo = notification.userInfo
     let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
     return keyboardSize.CGRectValue().height
   }
@@ -463,18 +463,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   /// Sets up navigation bar along with buttons.
   func setUpNavigationBar() {
     navigationBar.barTintColor = ProjectColors.background
-    navigationBar.translucent  = false
+    navigationBar.translucent = false
     
-    navigationBar.layer.shadowColor   = UIColor.blackColor().CGColor
-    navigationBar.layer.shadowOffset  = CGSize(width: 0.0, height: 2.0)
+    navigationBar.layer.shadowColor = UIColor.blackColor().CGColor
+    navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
     navigationBar.layer.shadowOpacity = 0.25
-    navigationBar.layer.shadowRadius  = 2.0
+    navigationBar.layer.shadowRadius = 2.0
     
     let attributes = [NSFontAttributeName : UIFont(name: "FontAwesome", size: 18)!]
 
-    fontButton   = UIBarButtonItem(title: "Aa",       style: .Plain, target: self, action: #selector(ViewController.fontManagerSelected(_:)))
-    cancelButton = UIBarButtonItem(title: "\u{f00d}", style: .Plain, target: self, action: #selector(ViewController.cancelImage))
-    shareButton  = UIBarButtonItem(barButtonSystemItem: .Action,     target: self, action: #selector(ViewController.share))
+    fontButton = UIBarButtonItem(title: "Aa",       style: .Plain, target: self, action: #selector(MemeEditorViewController.fontManagerSelected(_:)))
+    cancelButton = UIBarButtonItem(title: "\u{f00d}", style: .Plain, target: self, action: #selector(MemeEditorViewController.cancelImage))
+    shareButton = UIBarButtonItem(barButtonSystemItem: .Action,     target: self, action: #selector(MemeEditorViewController.share))
     
     for buttons in [fontButton, shareButton, cancelButton] {
       buttons.setTitleTextAttributes(attributes, forState: .Normal)
@@ -482,7 +482,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     navigationItem.rightBarButtonItems = [shareButton, fontButton]
-    navigationItem.leftBarButtonItem   =  cancelButton
+    navigationItem.leftBarButtonItem = cancelButton
     navigationBar.items = [navigationItem]
     
     view.addSubview(navigationBar)
@@ -491,18 +491,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
   /// Sets up toolbar along with buttons.
   func setUpToolbar() {
     toolbar.barTintColor = ProjectColors.background
-    toolbar.translucent  = false
+    toolbar.translucent = false
     
-    toolbar.layer.shadowColor   = UIColor.blackColor().CGColor
-    toolbar.layer.shadowOffset  = CGSize(width: 0.0, height: 0.0)
+    toolbar.layer.shadowColor = UIColor.blackColor().CGColor
+    toolbar.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
     toolbar.layer.shadowOpacity = 0.4
-    toolbar.layer.shadowRadius  = 5.0
+    toolbar.layer.shadowRadius = 5.0
     
-    albumButton.addTarget(self, action: #selector(ViewController.selectImageFromAlbum), forControlEvents: .TouchUpInside)
+    albumButton.addTarget(self, action: #selector(MemeEditorViewController.selectImageFromAlbum), forControlEvents: .TouchUpInside)
     albumButton.setTitle("\u{f03e}", forState: .Normal)
     albumButton.backgroundColor = ProjectColors.secondAccent
     
-    cameraButton.addTarget(self, action: #selector(ViewController.captureImageFromCamera), forControlEvents: .TouchUpInside)
+    cameraButton.addTarget(self, action: #selector(MemeEditorViewController.captureImageFromCamera), forControlEvents: .TouchUpInside)
     cameraButton.setTitle("\u{f083}", forState: .Normal)
     cameraButton.backgroundColor = ProjectColors.secondAccent
     
@@ -533,11 +533,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     bottomTextField.text = "BOTTOM"
     
     for index in textFieldArray {
-      index.delegate              = textDelegate
+      index.delegate = textDelegate
       index.defaultTextAttributes = memeTextAttributes
-      index.textColor             = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-      index.textAlignment         = NSTextAlignment.Center
+      index.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+      index.textAlignment = NSTextAlignment.Center
     }
   }
   
-}  // ViewController End
+}  // MemeEditorViewController End

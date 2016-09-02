@@ -19,8 +19,6 @@ class SavedMemesTableView: UITableViewController, SavedMemesTableViewDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     tableView.rowHeight = 80
-
-
   }
 
   override func viewWillAppear(animated: Bool) {
@@ -29,6 +27,7 @@ class SavedMemesTableView: UITableViewController, SavedMemesTableViewDelegate {
   }
 
 
+  /// Number of rows is based on the number of memes stored.
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
     if memes.count > 0 {
@@ -40,6 +39,7 @@ class SavedMemesTableView: UITableViewController, SavedMemesTableViewDelegate {
   }
 
 
+  /// Add Text and Images to each table cell
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("TableViewCell")!
 
@@ -54,6 +54,7 @@ class SavedMemesTableView: UITableViewController, SavedMemesTableViewDelegate {
   }
 
 
+  /// Open Meme Editor on selection.
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     let memeViewController = storyboard?.instantiateViewControllerWithIdentifier("memeViewController") as! ViewController
 
@@ -68,6 +69,11 @@ class SavedMemesTableView: UITableViewController, SavedMemesTableViewDelegate {
   }
 
 
+  // **************************************************
+  //   MARK: Buttons
+  // **************************************************
+
+  /// Open Meme Editor
   @IBAction func addMeme(sender: UIBarButtonItem) {
 
     let memeViewController = storyboard?.instantiateViewControllerWithIdentifier("memeViewController") as! ViewController
@@ -86,6 +92,9 @@ class SavedMemesTableView: UITableViewController, SavedMemesTableViewDelegate {
 // **************************************************
 //   MARK: Saved Memes Table View Delegate
 // **************************************************
+//
+//   Used to inform Collection View that the data used
+//   needs to be reloaded.
 
 protocol SavedMemesTableViewDelegate {
   func reloadData()
